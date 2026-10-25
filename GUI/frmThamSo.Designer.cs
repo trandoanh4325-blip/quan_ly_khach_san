@@ -59,7 +59,7 @@
             txtGiaTri.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
             txtGiaTri.Location = new System.Drawing.Point(530, 402);
             txtGiaTri.Name = "txtGiaTri";
-            txtGiaTri.Size = new System.Drawing.Size(186, 27);
+            txtGiaTri.Size = new System.Drawing.Size(517, 27);
             txtGiaTri.TabIndex = 3;
             // 
             // txtMoTa
