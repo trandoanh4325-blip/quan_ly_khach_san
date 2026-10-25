@@ -1,12 +1,4 @@
-﻿// =====================================================================
-// CODE-BEHIND cho form frmThamSo (vẽ bằng Designer).
-// Control cần có (đặt đúng tên):
-//   lvThamSo, ucTim, txtTimNhanh, btnTimNangCao,
-//   txtTenThamSo, txtGiaTri, txtMoTa,
-//   btnThem, btnSua, btnXoa, btnLuu, btnHuy
-// KHÔNG double-click vào control: các sự kiện đã được gắn sẵn trong hàm khởi tạo.
-// =====================================================================
-using System;
+﻿using System;
 using System.Collections;
 using System.Windows.Forms;
 using QLKS.BUS;
@@ -62,7 +54,6 @@ namespace QLKS.GUI
             LvHelper.Do(lvThamSo, ds, cot);
         }
 
-        // Tên tham số là khóa: chỉ cho nhập khi THÊM MỚI, khi sửa thì khóa lại
         private void DatCheDo(bool nhap)
         {
             txtTenThamSo.Enabled = nhap && dangThem;

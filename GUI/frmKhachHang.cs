@@ -1,13 +1,4 @@
-﻿// =====================================================================
-// CODE-BEHIND cho form frmKhachHang (vẽ bằng Designer).
-// Control cần có (đặt đúng tên):
-//   lvKhachHang, ucTim, txtTimNhanh, btnTimNangCao,
-//   txtMaKH (ReadOnly), txtHoTen, txtCCCD, cboGioiTinh (DropDownList),
-//   txtTongThu (ReadOnly), txtSoLuotToi (ReadOnly),
-//   btnThem, btnSua, btnXoa, btnLuu, btnHuy
-// KHÔNG double-click vào control: các sự kiện đã được gắn sẵn trong hàm khởi tạo.
-// =====================================================================
-using System;
+﻿using System;
 using System.Collections;
 using System.Windows.Forms;
 using QLKS.BUS;
@@ -70,7 +61,6 @@ namespace QLKS.GUI
             LvHelper.Do(lvKhachHang, ds, cot);
         }
 
-        // txtMaKH, txtTongThu, txtSoLuotToi là ReadOnly nên không đụng tới ở đây
         private void DatCheDo(bool nhap)
         {
             txtHoTen.Enabled = nhap;
@@ -135,7 +125,6 @@ namespace QLKS.GUI
 
         private void btnLuu_Click(object sender, EventArgs e)
         {
-            // TongThu và SoLuotToi không đọc từ ô nhập: chỉ thay đổi sau khi thanh toán hóa đơn
             var kh = new KhachHang
             {
                 MaKH = txtMaKH.Text,

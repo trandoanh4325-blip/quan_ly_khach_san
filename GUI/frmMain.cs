@@ -1,11 +1,4 @@
-﻿// =====================================================================
-// CODE-BEHIND cho form frmMain (vẽ bằng Designer) - LÀM CUỐI CÙNG, sau khi đã có
-// đủ frmNhanVien, frmKhachHang, frmThamSo.
-// Control cần có (đặt đúng tên):
-//   lblTieuDe, pnlMenu, btnNhanVien, btnKhachHang, btnThamSo, pnlNoiDung, lblChao
-// Thêm chức năng mới: vẽ thêm 1 Button vào pnlMenu rồi thêm 1 dòng Click ở hàm khởi tạo.
-// =====================================================================
-using System;
+﻿using System;
 using System.Drawing;
 using System.Windows.Forms;
 using QLKS.BUS;
@@ -21,8 +14,6 @@ namespace QLKS.GUI
         {
             InitializeComponent();
             Load += frmMain_Load;
-
-            // ---- TV1 ----
             btnNhanVien.Click += (s, e) => MoForm(new frmNhanVien(), btnNhanVien);
             btnKhachHang.Click += (s, e) => MoForm(new frmKhachHang(), btnKhachHang);
             btnThamSo.Click += (s, e) => MoForm(new frmThamSo(), btnThamSo);
@@ -43,12 +34,9 @@ namespace QLKS.GUI
 
         private void frmMain_Load(object sender, EventArgs e)
         {
-            // Tên khách sạn lấy từ bảng tham số
             lblTieuDe.Text = ThamSoBUS.Doc("ten_khach_san", "QUẢN LÝ KHÁCH SẠN").ToUpper();
             
         }
-
-        // Mở 1 form con vào vùng nội dung bên phải
         private void MoForm(Form f, Button nut)
         {
             if (nutDangChon != null) nutDangChon.BackColor = SystemColors.Control;

@@ -45,9 +45,7 @@ namespace QLKS.GUI
             pnlNoiDung = new Panel();
             pnlMenu.SuspendLayout();
             SuspendLayout();
-            // 
-            // lblTieuDe
-            // 
+           
             lblTieuDe.BackColor = System.Drawing.Color.Cyan;
             lblTieuDe.Dock = DockStyle.Top;
             lblTieuDe.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, 0);
@@ -58,9 +56,7 @@ namespace QLKS.GUI
             lblTieuDe.TabIndex = 32;
             lblTieuDe.Text = "Khách Sạn";
             lblTieuDe.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // btnKhachHang
-            // 
+            
             btnKhachHang.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             btnKhachHang.BackColor = System.Drawing.Color.White;
             btnKhachHang.Location = new System.Drawing.Point(12, 73);
@@ -82,9 +78,7 @@ namespace QLKS.GUI
             btnNhanVien.Text = "Nhân Viên";
             btnNhanVien.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             btnNhanVien.UseVisualStyleBackColor = false;
-            // 
-            // btnThamSo
-            // 
+            
             btnThamSo.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             btnThamSo.BackColor = System.Drawing.Color.White;
             btnThamSo.Location = new System.Drawing.Point(12, 119);
@@ -94,9 +88,7 @@ namespace QLKS.GUI
             btnThamSo.Text = "Tham số";
             btnThamSo.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             btnThamSo.UseVisualStyleBackColor = false;
-            // 
-            // pnlMenu
-            // 
+             
             pnlMenu.Controls.Add(btnThongKe);
             pnlMenu.Controls.Add(btnSanPham);
             pnlMenu.Controls.Add(btnHoaDon);
@@ -112,9 +104,7 @@ namespace QLKS.GUI
             pnlMenu.Name = "pnlMenu";
             pnlMenu.Size = new System.Drawing.Size(240, 514);
             pnlMenu.TabIndex = 40;
-            // 
-            // btnThongKe
-            // 
+             
             btnThongKe.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             btnThongKe.BackColor = System.Drawing.Color.White;
             btnThongKe.Location = new System.Drawing.Point(12, 427);
@@ -124,9 +114,7 @@ namespace QLKS.GUI
             btnThongKe.Text = "Thống Kê";
             btnThongKe.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             btnThongKe.UseVisualStyleBackColor = false;
-            // 
-            // btnSanPham
-            // 
+            
             btnSanPham.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             btnSanPham.BackColor = System.Drawing.Color.White;
             btnSanPham.Location = new System.Drawing.Point(12, 383);
@@ -136,9 +124,7 @@ namespace QLKS.GUI
             btnSanPham.Text = "Sản Phẩm";
             btnSanPham.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             btnSanPham.UseVisualStyleBackColor = false;
-            // 
-            // btnHoaDon
-            // 
+            
             btnHoaDon.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             btnHoaDon.BackColor = System.Drawing.Color.White;
             btnHoaDon.Location = new System.Drawing.Point(12, 339);
@@ -148,9 +134,7 @@ namespace QLKS.GUI
             btnHoaDon.Text = "Hóa Đơn";
             btnHoaDon.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             btnHoaDon.UseVisualStyleBackColor = false;
-            // 
-            // btnDichVu
-            // 
+            
             btnDichVu.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             btnDichVu.BackColor = System.Drawing.Color.White;
             btnDichVu.Location = new System.Drawing.Point(12, 295);
@@ -160,9 +144,7 @@ namespace QLKS.GUI
             btnDichVu.Text = "Dịch Vụ";
             btnDichVu.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             btnDichVu.UseVisualStyleBackColor = false;
-            // 
-            // btnPhieuDatPhong
-            // 
+             
             btnPhieuDatPhong.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             btnPhieuDatPhong.BackColor = System.Drawing.Color.White;
             btnPhieuDatPhong.Location = new System.Drawing.Point(12, 251);
@@ -172,9 +154,7 @@ namespace QLKS.GUI
             btnPhieuDatPhong.Text = "Phiếu Đặt Phòng";
             btnPhieuDatPhong.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             btnPhieuDatPhong.UseVisualStyleBackColor = false;
-            // 
-            // btnPhong
-            // 
+             
             btnPhong.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             btnPhong.BackColor = System.Drawing.Color.White;
             btnPhong.Location = new System.Drawing.Point(12, 207);
@@ -184,9 +164,7 @@ namespace QLKS.GUI
             btnPhong.Text = "Phòng";
             btnPhong.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             btnPhong.UseVisualStyleBackColor = false;
-            // 
-            // btnLoaiPhong
-            // 
+            
             btnLoaiPhong.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             btnLoaiPhong.BackColor = System.Drawing.Color.White;
             btnLoaiPhong.Location = new System.Drawing.Point(12, 163);
@@ -196,18 +174,14 @@ namespace QLKS.GUI
             btnLoaiPhong.Text = "Loại Phòng";
             btnLoaiPhong.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             btnLoaiPhong.UseVisualStyleBackColor = false;
-            // 
-            // pnlNoiDung
-            // 
+            
             pnlNoiDung.BackColor = System.Drawing.Color.White;
             pnlNoiDung.Dock = DockStyle.Fill;
             pnlNoiDung.Location = new System.Drawing.Point(240, 66);
             pnlNoiDung.Name = "pnlNoiDung";
             pnlNoiDung.Size = new System.Drawing.Size(1058, 514);
             pnlNoiDung.TabIndex = 41;
-            // 
-            // frmMain
-            // 
+            
             AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new System.Drawing.Size(1298, 580);

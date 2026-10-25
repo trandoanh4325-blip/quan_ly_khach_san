@@ -13,7 +13,6 @@ namespace QLKS.GUI
         private bool dangThem;
         private readonly ucTimKiemNangCao ucTim = new ucTimKiemNangCao();
 
-        // Các cột hiển thị, cũng là các field cho tìm kiếm nâng cao
         private readonly CotHienThi[] cot =
         {
             new CotHienThi("Mã NV", "MaNV", 90),
@@ -44,7 +43,7 @@ namespace QLKS.GUI
             LvHelper.TaoCot(lvNhanVien, cot);
             ucTim.DatTruong(cot);
             ucTim.Visible = false;
-            ucTim.TimKiem += dk => HienThi(bus.TimNangCao(dk));   // tìm nâng cao (BUS, trên ArrayList)
+            ucTim.TimKiem += dk => HienThi(bus.TimNangCao(dk));//BUS, trên ArrayList
             ucTim.XoaLoc += () => HienThi(bus.DanhSach);
 
             cboChucVu.Items.AddRange(new object[] { "Quản lý", "Lễ tân", "Kế toán", "Thủ kho", "Buồng phòng" });
@@ -58,8 +57,6 @@ namespace QLKS.GUI
         {
             LvHelper.Do(lvNhanVien, ds, cot);
         }
-
-        // nhap = true: đang thêm/sửa -> mở các ô nhập, khóa danh sách
         private void DatCheDo(bool nhap)
         {
             txtHoTen.Enabled = nhap;
@@ -77,7 +74,7 @@ namespace QLKS.GUI
 
         private void LamTrongO()
         {
-            txtMaNV.Text = bus.SinhMa();        // mã tự sinh, ô này ReadOnly
+            txtMaNV.Text = bus.SinhMa();     
             txtHoTen.Clear();
             cboChucVu.Text = "";
             txtSDT.Clear();
