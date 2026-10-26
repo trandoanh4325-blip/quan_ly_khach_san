@@ -16,7 +16,7 @@ namespace QLKS.GUI
     {
         public event Action<List<TieuChi>> TimKiem;
         public event Action XoaLoc;
-
+        public event Action Dong;
         private const int RowH = 36;
         private readonly List<Panel> dong = new List<Panel>();
         private readonly Panel pnlNut = new Panel();
@@ -34,11 +34,8 @@ namespace QLKS.GUI
             var btnThem = new Button { Text = "+ Thêm điều kiện", Left = 6, Top = 6, Width = 150, Height = 30 };
             var btnTim = new Button { Text = "Tìm", Left = 162, Top = 6, Width = 80, Height = 30 };
             var btnXoa = new Button { Text = "Xóa lọc", Left = 248, Top = 6, Width = 90, Height = 30 };
-            var lblGhiChu = new Label
-            {
-                Text = "AND được tính trước OR. NOT đảo kết quả của dòng đó.",
-                Left = 350, Top = 12, AutoSize = true, ForeColor = Color.DimGray
-            };
+            var btnDong = new Button { Text = "Đóng", Left = 344, Top = 6, Width = 80, Height = 30 };
+            
             btnThem.Click += (s, e) => ThemDong();
             btnTim.Click += (s, e) => { if (TimKiem != null) TimKiem(LayTieuChi()); };
             btnXoa.Click += (s, e) =>
@@ -46,10 +43,15 @@ namespace QLKS.GUI
                 DatLai();
                 if (XoaLoc != null) XoaLoc();
             };
+            btnDong.Click += (s, e) =>
+            {
+                if (Dong != null) Dong();
+            };
             pnlNut.Controls.Add(btnThem);
             pnlNut.Controls.Add(btnTim);
             pnlNut.Controls.Add(btnXoa);
-            pnlNut.Controls.Add(lblGhiChu);
+            pnlNut.Controls.Add(btnDong);
+            
             Controls.Add(pnlNut);
             Height = pnlNut.Height + RowH;
         }
@@ -91,7 +93,11 @@ namespace QLKS.GUI
             var btnBo = new Button { Text = "×", Left = 606, Top = 5, Width = 32, Height = 26 };
             btnBo.Click += (s, e) =>
             {
-                if (dong.Count <= 1) return;
+                if (dong.Count <= 1)
+                {
+                    ((TextBox)((Control[])p.Tag)[4]).Clear();
+                    return;
+                }
                 dong.Remove(p);
                 Controls.Remove(p);
                 p.Dispose();

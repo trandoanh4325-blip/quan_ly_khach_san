@@ -15,16 +15,16 @@ namespace QLKS
 
             try
             {
-                // Kết nối CSDL ĐÚNG 1 LẦN khi khởi động (MyConnection dùng lại suốt chương trình)
+                
                 KetNoiBUS.KhoiTao();
             }
             catch (Exception ex)
             {
                 MessageBox.Show(
                     "Không kết nối được CSDL.\n\n" +
-                    "- Kiểm tra XAMPP đã bật MySQL chưa.\n" +
-                    "- Kiểm tra đã import Database/qlks.sql chưa.\n" +
-                    "- Kiểm tra chuỗi kết nối trong DAO/MyConnection.cs.\n\n" + ex.Message,
+                    "- Kiểm tra XAMPP.\n" +
+                    "- Kiểm tra Database/qlks.sql.\n" +
+                    "- Kiểm tra kết nối DAO/MyConnection.cs.\n\n" + ex.Message,
                     "Lỗi kết nối", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }

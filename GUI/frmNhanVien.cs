@@ -4,6 +4,7 @@ using System.Windows.Forms;
 using QLKS.BUS;
 using QLKS.Common;
 using QLKS.DTO;
+using System.Drawing;
 
 namespace QLKS.GUI
 {
@@ -11,6 +12,8 @@ namespace QLKS.GUI
     {
         private readonly NhanVienBUS bus = new NhanVienBUS();
         private bool dangThem;
+        private int daDay;
+        private bool dangSapXep;
         private readonly ucTimKiemNangCao ucTim = new ucTimKiemNangCao();
 
         private readonly CotHienThi[] cot =
@@ -26,7 +29,7 @@ namespace QLKS.GUI
             InitializeComponent();
             Load += frmNhanVien_Load;
             txtTimNhanh.TextChanged += (s, e) => HienThi(bus.TimNhanh(txtTimNhanh.Text));
-            btnTimNangCao.Click += (s, e) => ucTim.Visible = !ucTim.Visible;
+            btnTimNangCao.Click += (s, e) => BatTatTimNangCao();
             lvNhanVien.SelectedIndexChanged += lvNhanVien_SelectedIndexChanged;
             btnThem.Click += btnThem_Click;
             btnSua.Click += btnSua_Click;
@@ -43,6 +46,8 @@ namespace QLKS.GUI
             LvHelper.TaoCot(lvNhanVien, cot);
             ucTim.DatTruong(cot);
             ucTim.Visible = false;
+            ucTim.Dong += () => { ucTim.Visible = false; SapXepTimNangCao(); };
+            ucTim.SizeChanged += (s2, e2) => { if (ucTim.Visible) SapXepTimNangCao(); };
             ucTim.TimKiem += dk => HienThi(bus.TimNangCao(dk));//BUS, trên ArrayList
             ucTim.XoaLoc += () => HienThi(bus.DanhSach);
 
@@ -51,6 +56,35 @@ namespace QLKS.GUI
             HienThi(bus.DanhSach);
             LamTrongO();
             DatCheDo(false);
+        }
+       private void BatTatTimNangCao()
+        {
+            ucTim.Visible = !ucTim.Visible;
+            if (ucTim.Visible) ucTim.BringToFront();
+            SapXepTimNangCao();
+        }
+
+        private void SapXepTimNangCao()
+        {
+            if (dangSapXep) return;
+            dangSapXep = true;
+            try
+            {
+                int can = ucTim.Visible ? ucTim.Height : 0;
+                if (ucTim.Visible)
+                {
+                    ucTim.Location = new Point(lvNhanVien.Left, lvNhanVien.Top - daDay);
+                    ucTim.Width = lvNhanVien.Width;
+                }
+                int delta = can - daDay;
+                lvNhanVien.Top += delta;
+                lvNhanVien.Height -= delta;
+                daDay = can;
+            }
+            finally
+            {
+                dangSapXep = false;
+            }
         }
 
         private void HienThi(ArrayList ds)

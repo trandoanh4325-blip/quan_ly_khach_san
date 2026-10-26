@@ -7,16 +7,7 @@ using QLKS.Common;
 
 namespace QLKS.GUI
 {
-    /// <summary>
-    /// Form tìm kiếm dùng chung cho nút "..." (mục 4 yêu cầu).
-    /// Mở form -> tìm / lọc -> chọn 1 dòng -> đối tượng được ghi vào SelectionContext (biến static)
-    /// -> quay lại form đang làm và điền thông tin.
-    ///
-    /// Ví dụ (trong form Phiếu đặt phòng, nút "..." cạnh ô khách hàng):
-    ///   var kh = frmChon.Chon&lt;KhachHang&gt;("Chọn khách hàng", new KhachHangBUS().DanhSach,
-    ///               new CotHienThi("Mã", "MaKH", 80), new CotHienThi("Họ tên", "HoTen", 200), new CotHienThi("CCCD", "CCCD", 130));
-    ///   if (kh != null) { txtMaKH.Text = kh.MaKH; txtTenKH.Text = kh.HoTen; }
-    /// </summary>
+   
     public class frmChon : Form
     {
         private readonly ArrayList nguon;
@@ -75,6 +66,7 @@ namespace QLKS.GUI
             ucTim.DatTruong(cot);
             ucTim.TimKiem += dk => Hien(TimKiemBUS.Loc(nguon, dk));
             ucTim.XoaLoc += () => Hien(nguon);
+            ucTim.Dong += () => ucTim.Visible = false;
             tl.Controls.Add(ucTim, 0, 1);
 
             lv = new ListView

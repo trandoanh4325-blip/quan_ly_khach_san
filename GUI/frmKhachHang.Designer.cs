@@ -50,7 +50,6 @@
             txtTimNhanh = new System.Windows.Forms.TextBox();
             lbltieude = new System.Windows.Forms.Label();
             lvKhachHang = new System.Windows.Forms.ListView();
-            ucTimKiemNangCao1 = new ucTimKiemNangCao();
             SuspendLayout();
             // 
             // btnThem
@@ -268,22 +267,11 @@
             lvKhachHang.UseCompatibleStateImageBehavior = false;
             lvKhachHang.View = System.Windows.Forms.View.Details;
             // 
-            // ucTimKiemNangCao1
-            // 
-            ucTimKiemNangCao1.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
-            ucTimKiemNangCao1.BackColor = System.Drawing.Color.WhiteSmoke;
-            ucTimKiemNangCao1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            ucTimKiemNangCao1.Location = new System.Drawing.Point(626, 528);
-            ucTimKiemNangCao1.Name = "ucTimKiemNangCao1";
-            ucTimKiemNangCao1.Size = new System.Drawing.Size(705, 44);
-            ucTimKiemNangCao1.TabIndex = 31;
-            // 
             // frmKhachHang
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             ClientSize = new System.Drawing.Size(1317, 662);
-            Controls.Add(ucTimKiemNangCao1);
             Controls.Add(lvKhachHang);
             Controls.Add(lbltieude);
             Controls.Add(lblTimNhanh);
@@ -335,6 +323,5 @@
         private System.Windows.Forms.TextBox txtTimNhanh;
         private System.Windows.Forms.Label lbltieude;
         private System.Windows.Forms.ListView lvKhachHang;
-        private ucTimKiemNangCao ucTimKiemNangCao1;
     }
 }

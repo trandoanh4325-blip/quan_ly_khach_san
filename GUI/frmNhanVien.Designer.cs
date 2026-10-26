@@ -45,7 +45,6 @@
             lblMaNV = new System.Windows.Forms.Label();
             lblSDT = new System.Windows.Forms.Label();
             lblHoTen = new System.Windows.Forms.Label();
-            ucTimKiemNangCao1 = new ucTimKiemNangCao();
             lblChucVu = new System.Windows.Forms.Label();
             SuspendLayout();
             // 
@@ -214,16 +213,6 @@
             lblHoTen.TabIndex = 18;
             lblHoTen.Text = "Họ Tên ";
             // 
-            // ucTimKiemNangCao1
-            // 
-            ucTimKiemNangCao1.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
-            ucTimKiemNangCao1.BackColor = System.Drawing.Color.WhiteSmoke;
-            ucTimKiemNangCao1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            ucTimKiemNangCao1.Location = new System.Drawing.Point(639, 641);
-            ucTimKiemNangCao1.Name = "ucTimKiemNangCao1";
-            ucTimKiemNangCao1.Size = new System.Drawing.Size(736, 44);
-            ucTimKiemNangCao1.TabIndex = 19;
-            // 
             // lblChucVu
             // 
             lblChucVu.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
@@ -240,7 +229,6 @@
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             ClientSize = new System.Drawing.Size(1341, 751);
             Controls.Add(lblChucVu);
-            Controls.Add(ucTimKiemNangCao1);
             Controls.Add(lblHoTen);
             Controls.Add(lblSDT);
             Controls.Add(lblMaNV);
@@ -284,7 +272,6 @@
         private System.Windows.Forms.Label lblMaNV;
         private System.Windows.Forms.Label lblSDT;
         private System.Windows.Forms.Label lblHoTen;
-        private ucTimKiemNangCao ucTimKiemNangCao1;
         private System.Windows.Forms.Label lblChucVu;
     }
 }
