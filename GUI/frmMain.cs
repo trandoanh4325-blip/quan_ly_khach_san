@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Drawing;
 using System.Windows.Forms;
 using QLKS.BUS;
@@ -19,8 +19,8 @@ namespace QLKS.GUI
             btnThamSo.Click += (s, e) => MoForm(new frmThamSo(), btnThamSo);
 
             // ---- TV2 (bỏ comment khi đã vẽ nút và có form) ----
-            // btnLoaiPhong.Click += (s, e) => MoForm(new frmLoaiPhong(), btnLoaiPhong);
-            // btnPhong.Click += (s, e) => MoForm(new frmPhong(), btnPhong);
+            btnLoaiPhong.Click += (s, e) => MoForm(new frmLoaiPhong(), btnLoaiPhong);
+            btnPhong.Click += (s, e) => MoForm(new frmPhong(), btnPhong);
             // btnPhieuDatPhong.Click += (s, e) => MoForm(new frmPhieuDatPhong(), btnPhieuDatPhong);
 
             // ---- TV3 ----
@@ -35,7 +35,7 @@ namespace QLKS.GUI
         private void frmMain_Load(object sender, EventArgs e)
         {
             lblTieuDe.Text = ThamSoBUS.Doc("ten_khach_san", "QUẢN LÝ KHÁCH SẠN").ToUpper();
-            
+
         }
         private void MoForm(Form f, Button nut)
         {
@@ -48,7 +48,7 @@ namespace QLKS.GUI
                 pnlNoiDung.Controls.Remove(formCon);
                 formCon.Dispose();
             }
-            
+
 
             formCon = f;
             f.TopLevel = false;
