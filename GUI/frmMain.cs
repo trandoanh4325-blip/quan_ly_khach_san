@@ -24,8 +24,9 @@ namespace QLKS.GUI
             btnPhieuDatPhong.Click += (s, e) => MoForm(new frmPhieuDatPhong(), btnPhieuDatPhong);
 
             // ---- TV3 ----
-            // btnDichVu.Click += (s, e) => MoForm(new frmDichVu(), btnDichVu);
-            // btnHoaDon.Click += (s, e) => MoForm(new frmHoaDon(), btnHoaDon);
+            btnDichVu.Click += (s, e) => MoForm(new frmDichVu(), btnDichVu);
+            btnHoaDon.Click += (s, e) => MoForm(new frmHoaDon(), btnHoaDon);
+            FormClosing += (s, e) => { if (formCon is frmHoaDon hd && !hd.CoTheDong()) e.Cancel = true; };
 
             // ---- TV4 ----
             // btnSanPham.Click += (s, e) => MoForm(new frmSanPham(), btnSanPham);
@@ -39,6 +40,7 @@ namespace QLKS.GUI
         }
         private void MoForm(Form f, Button nut)
         {
+            if (formCon is frmHoaDon hd && !hd.CoTheDong()) { f.Dispose(); return; }
             if (nutDangChon != null) nutDangChon.BackColor = SystemColors.Control;
             nut.BackColor = Color.FromArgb(217, 226, 243);
             nutDangChon = nut;
