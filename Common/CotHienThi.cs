@@ -6,12 +6,14 @@ namespace QLKS.Common
         public string TieuDe { get; private set; }
         public string Prop { get; private set; }
         public int Rong { get; private set; }
+        public string DinhDang { get; private set; }
 
-        public CotHienThi(string tieuDe, string prop, int rong = 120)
+        public CotHienThi(string tieuDe, string prop, int rong = 120, string dinhDang = null)
         {
             TieuDe = tieuDe;
             Prop = prop;
             Rong = rong;
+            DinhDang = dinhDang;
         }
     }
 }

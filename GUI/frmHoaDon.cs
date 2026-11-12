@@ -98,7 +98,7 @@ namespace QLKS.GUI
         }
         private void ChonKM()
         {
-            var k = frmChon.Chon<KhuyenMaiThanhToan>("Chọn khuyến mãi (điều kiện được kiểm tra khi tính tiền)", bus.KhuyenMai(), new CotHienThi("Mã", "MaKM", 85), new CotHienThi("Khuyến mãi", "TenKM", 250), new CotHienThi("Loại giảm", "LoaiGiam", 120), new CotHienThi("Giá trị", "GiaTriGiam", 100), new CotHienThi("Từ ngày", "NgayBatDau", 100), new CotHienThi("Đến ngày", "NgayKetThuc", 100));
+            var k = frmChon.Chon<KhuyenMai>("Chọn khuyến mãi (điều kiện được kiểm tra khi tính tiền)", bus.KhuyenMai(), new CotHienThi("Mã", "MaKM", 85), new CotHienThi("Khuyến mãi", "TenKM", 250), new CotHienThi("Loại giảm", "LoaiGiam", 120), new CotHienThi("Giá trị (% / đ)", "GiaTriGiam", 120, "#,##0.##"), new CotHienThi("Từ ngày", "NgayBatDau", 100), new CotHienThi("Đến ngày", "NgayKetThuc", 100));
             if (k == null) return; nhap.MaKM = k.MaKM; km.Text = k.TenKM; VoHieu();
         }
         private string PhongChon()

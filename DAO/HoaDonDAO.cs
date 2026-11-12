@@ -44,22 +44,12 @@ namespace QLKS.DAO
 
         public ArrayList PhuThu()
         {
-            var ds = new ArrayList();
-            foreach (DataRow r in MyConnection.ExecuteQuery(
-                "SELECT p.ma_phu_thu,p.ten_phu_thu,s.gia_ban FROM phu_thu p JOIN san_pham s ON s.ma_sp=p.ma_sp ORDER BY p.ma_phu_thu").Rows)
-                ds.Add(new LuaChonPhuThu { MaPhuThu = r["ma_phu_thu"].ToString(), TenPhuThu = r["ten_phu_thu"].ToString(), DonGia = Convert.ToDecimal(r["gia_ban"]) });
-            return ds;
+            return new PhuThuDAO().GetAll();
         }
 
         public ArrayList KhuyenMai()
         {
-            var ds = new ArrayList();
-            foreach (DataRow r in MyConnection.ExecuteQuery("SELECT * FROM khuyen_mai ORDER BY ma_km").Rows)
-                ds.Add(new KhuyenMaiThanhToan { MaKM = r["ma_km"].ToString(), TenKM = r["ten_km"].ToString(), LoaiGiam = r["loai_giam"].ToString(),
-                    GiaTriGiam = Convert.ToDecimal(r["gia_tri_giam"]), NgayBatDau = Convert.ToDateTime(r["ngay_bat_dau"]),
-                    NgayKetThuc = Convert.ToDateTime(r["ngay_ket_thuc"]), TongThuToiThieu = Convert.ToDecimal(r["tong_thu_toi_thieu"]),
-                    SoLuotToiToiThieu = Convert.ToInt32(r["so_luot_toi_toi_thieu"]) });
-            return ds;
+            return new KhuyenMaiDAO().GetAll();
         }
 
         // Khóa phiếu trước khi đọc lại dữ liệu và tạo hóa đơn: chỉ một lần thanh toán được commit.

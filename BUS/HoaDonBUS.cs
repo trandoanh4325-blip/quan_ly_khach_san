@@ -52,7 +52,7 @@ namespace QLKS.BUS
             ct.NgayGioCheckout = checkout;
         }
 
-        public static decimal TinhGiam(KhuyenMaiThanhToan km, DateTime ngay, decimal tongThu, int soLuot, decimal tong)
+        public static decimal TinhGiam(KhuyenMai km, DateTime ngay, decimal tongThu, int soLuot, decimal tong)
         {
             if (km == null) return 0;
             if (ngay.Date < km.NgayBatDau.Date || ngay.Date > km.NgayKetThuc.Date)
@@ -114,10 +114,10 @@ namespace QLKS.BUS
                 h.PhuThu.Add(ct); h.TongTienPhuThu += ct.ThanhTien;
             }
             decimal tong = h.TongTienPhong + h.TongTienDichVu + h.TongTienPhuThu;
-            KhuyenMaiThanhToan km = null;
+            KhuyenMai km = null;
             if (h.MaKM != null)
             {
-                foreach (KhuyenMaiThanhToan item in dao.KhuyenMai()) if (item.MaKM == h.MaKM) km = item;
+                foreach (KhuyenMai item in dao.KhuyenMai()) if (item.MaKM == h.MaKM) km = item;
                 if (km == null) throw new InvalidOperationException("Khuyến mãi không còn tồn tại.");
             }
             DataRow kh = dao.KhachHang(h.MaKH);

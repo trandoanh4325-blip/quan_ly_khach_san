@@ -19,12 +19,19 @@ namespace QLKS.GUI
             lv.Items.Clear();
             foreach (object o in ds)
             {
-                var it = new ListViewItem(Rf.Text(Rf.Get(o, cot[0].Prop)));
-                for (int i = 1; i < cot.Length; i++) it.SubItems.Add(Rf.Text(Rf.Get(o, cot[i].Prop)));
+                var it = new ListViewItem(NoiDung(o, cot[0]));
+                for (int i = 1; i < cot.Length; i++) it.SubItems.Add(NoiDung(o, cot[i]));
                 it.Tag = o;                 // giữ lại đối tượng DTO gốc của dòng
                 lv.Items.Add(it);
             }
             lv.EndUpdate();
+        }
+
+        private static string NoiDung(object o, CotHienThi cot)
+        {
+            object value = Rf.Get(o, cot.Prop);
+            if (cot.DinhDang != null && value is System.IFormattable f) return f.ToString(cot.DinhDang, null);
+            return Rf.Text(value);
         }
     }
 }
