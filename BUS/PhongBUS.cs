@@ -59,28 +59,7 @@ namespace QLKS.BUS
             return null;
         }
 
-        public bool Them(Phong p, out string loi)
-        {
-            p.MaPhong = p.MaPhong == null ? "" : p.MaPhong.Trim();
-            p.TenPhong = p.TenPhong == null ? "" : p.TenPhong.Trim();
-            loi = Kiem(p, true);
-            if (loi != null) return false;
-            try
-            {
-                MyConnection.BeginTransaction();
-                dao.Insert(p);
-                dao.CapNhatLoaiPhong(p.MaLoai);      // tổng số phòng và số phòng trống của loại tăng lên
-                MyConnection.Commit();
-                TaiDuLieu();
-                return true;
-            }
-            catch (Exception ex)
-            {
-                MyConnection.Rollback();
-                loi = MyConnection.ThongBaoLoi(ex);
-                return false;
-            }
-        }
+       
 
         public bool Sua(Phong p, out string loi)
         {

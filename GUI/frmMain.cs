@@ -21,7 +21,7 @@ namespace QLKS.GUI
             // ---- TV2 (bỏ comment khi đã vẽ nút và có form) ----
             btnLoaiPhong.Click += (s, e) => MoForm(new frmLoaiPhong(), btnLoaiPhong);
             btnPhong.Click += (s, e) => MoForm(new frmPhong(), btnPhong);
-            // btnPhieuDatPhong.Click += (s, e) => MoForm(new frmPhieuDatPhong(), btnPhieuDatPhong);
+            btnPhieuDatPhong.Click += (s, e) => MoForm(new frmPhieuDatPhong(), btnPhieuDatPhong);
 
             // ---- TV3 ----
             // btnDichVu.Click += (s, e) => MoForm(new frmDichVu(), btnDichVu);

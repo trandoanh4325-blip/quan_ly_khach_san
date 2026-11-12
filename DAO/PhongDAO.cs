@@ -28,14 +28,7 @@ namespace QLKS.DAO
             return ds;
         }
 
-        public bool Insert(Phong p)
-        {
-            // phòng mới luôn ở trạng thái Trống
-            return MyConnection.ExecuteNonQuery(
-                "INSERT INTO phong (ma_phong, ten_phong, ma_loai, trang_thai, so_nguoi_toi_da) VALUES (@ma, @ten, @loai, 'Trống', @n)",
-                MyConnection.P("@ma", p.MaPhong), MyConnection.P("@ten", p.TenPhong),
-                MyConnection.P("@loai", p.MaLoai), MyConnection.P("@n", p.SoNguoiToiDa)) > 0;
-        }
+        
 
         public bool Update(Phong p)
         {
