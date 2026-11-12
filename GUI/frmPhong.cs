@@ -13,7 +13,6 @@ namespace QLKS.GUI
         private readonly PhongBUS bus = new PhongBUS();
         private readonly LoaiPhongBUS loaiBus = new LoaiPhongBUS();
         private LoaiPhong loaiChon;          // loại phòng đang chọn bằng nút "..."
-        private bool dangThem;
         private int daDay;
         private bool dangSapXep;
         private readonly ucTimKiemNangCao ucTim = new ucTimKiemNangCao();
@@ -45,7 +44,6 @@ namespace QLKS.GUI
             btnTimNangCao.Click += (s, e) => BatTatTimNangCao();
             lvPhong.SelectedIndexChanged += lvPhong_SelectedIndexChanged;
             btnChonLoai.Click += btnChonLoai_Click;
-            btnThem.Click += btnThem_Click;
             btnSua.Click += btnSua_Click;
             btnXoa.Click += btnXoa_Click;
             btnLuu.Click += btnLuu_Click;
@@ -110,11 +108,9 @@ namespace QLKS.GUI
 
         private void DatCheDo(bool nhap)
         {
-            txtMaPhong.Enabled = nhap && dangThem;   // mã chỉ nhập được khi thêm mới
             txtTenPhong.Enabled = nhap;
             btnChonLoai.Enabled = nhap;
             cboSoNguoi.Enabled = nhap;
-            btnThem.Enabled = !nhap;
             btnSua.Enabled = !nhap;
             btnXoa.Enabled = !nhap;
             btnLuu.Enabled = nhap;
@@ -126,7 +122,7 @@ namespace QLKS.GUI
 
         private void LamTrongO()
         {
-            txtMaPhong.Text = bus.SinhMa();     // gợi ý mã, có thể sửa khi thêm (vd P501)
+            txtMaPhong.Clear();                 // mã phòng chỉ lấy từ CSDL (chọn dòng trong bảng)
             txtTenPhong.Clear();
             loaiChon = null;
             txtLoaiPhong.Clear();
@@ -162,14 +158,6 @@ namespace QLKS.GUI
             txtLoaiPhong.Text = lp.TenLoai;
         }
 
-        private void btnThem_Click(object sender, EventArgs e)
-        {
-            dangThem = true;
-            LamTrongO();
-            DatCheDo(true);
-            txtMaPhong.Focus();
-        }
-
         private void btnSua_Click(object sender, EventArgs e)
         {
             if (DongDangChon() == null)
@@ -177,7 +165,6 @@ namespace QLKS.GUI
                 MessageBox.Show("Vui lòng chọn dòng cần sửa.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
-            dangThem = false;
             DatCheDo(true);
             txtTenPhong.Focus();
         }
@@ -195,7 +182,7 @@ namespace QLKS.GUI
                 SoNguoiToiDa = soNguoi
             };
             string loi;
-            bool ok = dangThem ? bus.Them(p, out loi) : bus.Sua(p, out loi);
+            bool ok = bus.Sua(p, out loi);      // phòng cố định theo CSDL, chỉ sửa không thêm
             if (!ok)
             {
                 MessageBox.Show(loi, "Không thể lưu", MessageBoxButtons.OK, MessageBoxIcon.Warning);

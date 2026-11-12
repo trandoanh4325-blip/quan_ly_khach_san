@@ -33,7 +33,6 @@ namespace QLKS.GUI
             cboSoNguoi = new System.Windows.Forms.ComboBox();
             lblTrangThai = new System.Windows.Forms.Label();
             txtTrangThai = new System.Windows.Forms.TextBox();
-            btnThem = new System.Windows.Forms.Button();
             btnSua = new System.Windows.Forms.Button();
             btnXoa = new System.Windows.Forms.Button();
             btnLuu = new System.Windows.Forms.Button();
@@ -104,6 +103,7 @@ namespace QLKS.GUI
             txtMaPhong.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
             txtMaPhong.Location = new System.Drawing.Point(150, 395);
             txtMaPhong.MaxLength = 10;
+            txtMaPhong.ReadOnly = true;
             txtMaPhong.Name = "txtMaPhong";
             txtMaPhong.Size = new System.Drawing.Size(250, 27);
             txtMaPhong.TabIndex = 3;
@@ -195,20 +195,10 @@ namespace QLKS.GUI
             txtTrangThai.Size = new System.Drawing.Size(250, 27);
             txtTrangThai.TabIndex = 46;
             //
-            // btnThem
-            //
-            btnThem.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
-            btnThem.Location = new System.Drawing.Point(12, 524);
-            btnThem.Name = "btnThem";
-            btnThem.Size = new System.Drawing.Size(94, 29);
-            btnThem.TabIndex = 7;
-            btnThem.Text = "Thêm";
-            btnThem.UseVisualStyleBackColor = true;
-            //
             // btnSua
             //
             btnSua.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
-            btnSua.Location = new System.Drawing.Point(125, 524);
+            btnSua.Location = new System.Drawing.Point(12, 524);
             btnSua.Name = "btnSua";
             btnSua.Size = new System.Drawing.Size(94, 29);
             btnSua.TabIndex = 8;
@@ -218,7 +208,7 @@ namespace QLKS.GUI
             // btnXoa
             //
             btnXoa.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
-            btnXoa.Location = new System.Drawing.Point(238, 524);
+            btnXoa.Location = new System.Drawing.Point(125, 524);
             btnXoa.Name = "btnXoa";
             btnXoa.Size = new System.Drawing.Size(94, 29);
             btnXoa.TabIndex = 9;
@@ -228,7 +218,7 @@ namespace QLKS.GUI
             // btnLuu
             //
             btnLuu.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
-            btnLuu.Location = new System.Drawing.Point(351, 524);
+            btnLuu.Location = new System.Drawing.Point(238, 524);
             btnLuu.Name = "btnLuu";
             btnLuu.Size = new System.Drawing.Size(94, 29);
             btnLuu.TabIndex = 10;
@@ -238,7 +228,7 @@ namespace QLKS.GUI
             // btnHuy
             //
             btnHuy.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left;
-            btnHuy.Location = new System.Drawing.Point(464, 524);
+            btnHuy.Location = new System.Drawing.Point(351, 524);
             btnHuy.Name = "btnHuy";
             btnHuy.Size = new System.Drawing.Size(94, 29);
             btnHuy.TabIndex = 11;
@@ -254,7 +244,6 @@ namespace QLKS.GUI
             Controls.Add(btnLuu);
             Controls.Add(btnXoa);
             Controls.Add(btnSua);
-            Controls.Add(btnThem);
             Controls.Add(txtTrangThai);
             Controls.Add(lblTrangThai);
             Controls.Add(cboSoNguoi);
@@ -295,7 +284,6 @@ namespace QLKS.GUI
         private System.Windows.Forms.ComboBox cboSoNguoi;
         private System.Windows.Forms.Label lblTrangThai;
         private System.Windows.Forms.TextBox txtTrangThai;
-        private System.Windows.Forms.Button btnThem;
         private System.Windows.Forms.Button btnSua;
         private System.Windows.Forms.Button btnXoa;
         private System.Windows.Forms.Button btnLuu;
