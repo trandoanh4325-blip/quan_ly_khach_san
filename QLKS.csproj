@@ -12,6 +12,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Tests\**\*.cs" />
     <PackageReference Include="MySql.Data" Version="8.4.0" />
   </ItemGroup>
 
