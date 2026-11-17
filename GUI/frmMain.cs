@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Drawing;
 using System.Windows.Forms;
 using QLKS.BUS;
@@ -28,8 +28,33 @@ namespace QLKS.GUI
             // btnHoaDon.Click += (s, e) => MoForm(new frmHoaDon(), btnHoaDon);
 
             // ---- TV4 ----
-            // btnSanPham.Click += (s, e) => MoForm(new frmSanPham(), btnSanPham);
-            // btnThongKe.Click += (s, e) => MoForm(new frmThongKe(), btnThongKe);
+            btnSanPham.Click += (s, e) => MoForm(new frmSanPham(), btnSanPham);
+            btnThongKe.Click += (s, e) => MoForm(new frmThongKe(), btnThongKe);
+            // Các module TV4 bổ sung bằng code, không sửa Designer của TV1.
+            pnlMenu.AutoScroll = true;
+            foreach (Control c in pnlMenu.Controls)
+                if (c is Button b) b.Anchor = AnchorStyles.Top | AnchorStyles.Left;
+            ThemNutTV4("Loại sản phẩm", 475, () => new frmLoaiSanPham());
+            ThemNutTV4("Nhà cung cấp", 519, () => new frmNhaCungCap());
+            ThemNutTV4("Phiếu nhập hàng", 563, () => new frmPhieuNhap());
+            ThemNutTV4("Excel - Dữ liệu", 607, () => new frmExcelTV4());
+        }
+
+        private void ThemNutTV4(string nhan, int y, Func<Form> taoForm)
+        {
+            var b = new Button
+            {
+                Text = nhan,
+                Left = 12,
+                Top = y,
+                Width = 210,
+                Height = 38,
+                TextAlign = ContentAlignment.MiddleLeft,
+                BackColor = Color.White,
+                Anchor = AnchorStyles.Top | AnchorStyles.Left
+            };
+            b.Click += (s, e) => MoForm(taoForm(), b);
+            pnlMenu.Controls.Add(b);
         }
 
         private void frmMain_Load(object sender, EventArgs e)
