@@ -16,6 +16,7 @@ namespace QLKS.GUI
         private int daDay;
         private bool dangSapXep;
         private readonly ucTimKiemNangCao ucTim = new ucTimKiemNangCao();
+        private readonly string maMoDau;
 
         private readonly CotHienThi[] cot =
         {
@@ -27,8 +28,13 @@ namespace QLKS.GUI
             new CotHienThi("Số lượt tới", "SoLuotToi", 100)
         };
 
-        public frmKhachHang()
+        public frmKhachHang() : this(null)
         {
+        }
+
+        public frmKhachHang(string maKhachHang)
+        {
+            maMoDau = maKhachHang;
             InitializeComponent();
             Load += frmKhachHang_Load;
             txtTimNhanh.TextChanged += (s, e) => HienThi(bus.TimNhanh(txtTimNhanh.Text));
@@ -58,7 +64,20 @@ namespace QLKS.GUI
 
             HienThi(bus.DanhSach);
             LamTrongO();
+            ChonMaMoDau();
             DatCheDo(false);
+        }
+
+        private void ChonMaMoDau()
+        {
+            if (string.IsNullOrWhiteSpace(maMoDau)) return;
+            foreach (ListViewItem item in lvKhachHang.Items)
+            {
+                if ((item.Tag as KhachHang)?.MaKH != maMoDau) continue;
+                item.Selected = true;
+                item.EnsureVisible();
+                break;
+            }
         }
 
         private void BatTatTimNangCao()

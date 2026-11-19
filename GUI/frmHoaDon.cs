@@ -18,9 +18,10 @@ namespace QLKS.GUI
         private readonly TextBox nv = new TextBox { ReadOnly = true, Width = 200 };
         private readonly TextBox km = new TextBox { ReadOnly = true, Width = 200, Text = "Không áp dụng" };
         private readonly DateTimePicker ngay = new DateTimePicker { Format = DateTimePickerFormat.Custom, CustomFormat = "dd/MM/yyyy HH:mm:ss", Width = 190 };
-        private readonly Label tong = new Label { AutoSize = true, Padding = new Padding(8), Font = new Font("Segoe UI", 11, FontStyle.Bold) };
+        private readonly Label tong = new Label { Dock = DockStyle.Fill, AutoSize = false, Padding = new Padding(8), BorderStyle = BorderStyle.FixedSingle, Font = new Font("Segoe UI", 11, FontStyle.Bold) };
         private readonly Button thanhToan = new Button { Text = "Thanh toán", AutoSize = true, Height = 36 };
-        private readonly NumericUpDown sl = new NumericUpDown { Minimum = 1, Maximum = 1000000, Value = 1, Width = 85 };
+        private readonly Button xoaDichVu = new Button { Text = "Xóa dịch vụ đã chọn", AutoSize = true, Height = 34, Visible = false };
+        private readonly Button xoaPhuThu = new Button { Text = "Xóa phụ thu đã chọn", AutoSize = true, Height = 34, Visible = false };
         private readonly TextBox ghiChu = new TextBox { Width = 200, MaxLength = 255, PlaceholderText = "Ghi chú phụ thu" };
         private HoaDon nhap = new HoaDon(), daXem;
         private readonly CotHienThi[] cotPhong = { new CotHienThi("Phòng", "MaPhong", 85), new CotHienThi("Tên phòng", "TenPhong", 150),
@@ -31,7 +32,7 @@ namespace QLKS.GUI
             new CotHienThi("Số lượng", "SoLuong", 85), new CotHienThi("Đơn giá", "DonGia", 120), new CotHienThi("Thành tiền", "ThanhTien", 140), new CotHienThi("Ghi chú", "GhiChu", 180) };
         private readonly CotHienThi[] cotHD = { new CotHienThi("Hóa đơn", "MaHoaDon", 100), new CotHienThi("Phiếu đặt", "MaPhieu", 100),
             new CotHienThi("Khách hàng", "TenKH", 190), new CotHienThi("Thanh toán lúc", "NgayThanhToan", 160), new CotHienThi("Tổng hóa đơn", "TongTienHoaDon", 150),
-            new CotHienThi("Đã cọc", "TienDaCoc", 120), new CotHienThi("Còn thu / hoàn (-)", "TienCanThanhToan", 160) };
+            new CotHienThi("Đã cọc", "TienDaCoc", 120), new CotHienThi("Tiền thu", "TienThu", 120), new CotHienThi("Tiền hoàn", "TienHoan", 120), new CotHienThi("Trạng thái", "TrangThaiThanhToan", 150) };
 
         public frmHoaDon()
         {
@@ -40,26 +41,27 @@ namespace QLKS.GUI
             tabs.TabPages.AddRange(new[] { lap, xem }); Controls.Add(tabs);
             var root = new TableLayoutPanel { Dock = DockStyle.Fill, ColumnCount = 1, RowCount = 5, Padding = new Padding(8) };
             root.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100));
-            for (int i = 0; i < 5; i++) root.RowStyles.Add(new RowStyle(i == 2 ? SizeType.Percent : SizeType.AutoSize, i == 2 ? 100 : 0));
+            for (int i = 0; i < 5; i++) root.RowStyles.Add(new RowStyle(i == 2 ? SizeType.Percent : i == 4 ? SizeType.Absolute : SizeType.AutoSize, i == 2 ? 100 : i == 4 ? 60 : 0));
             lap.Controls.Add(root);
-            var bar = Hang(); bar.Controls.Add(phieu); Nut(bar, "Chọn phiếu...", ChonPhieu); bar.Controls.Add(nv); Nut(bar, "Nhân viên...", ChonNV); bar.Controls.Add(ngay);
+            var bar = Hang(); bar.Controls.Add(phieu); Nut(bar, "Chọn phiếu...", ChonPhieu); bar.Controls.Add(nv); bar.Controls.Add(ngay);
             root.Controls.Add(bar, 0, 0);
-            var khuyenMai = Hang(); khuyenMai.Controls.Add(km); Nut(khuyenMai, "Khuyến mãi...", ChonKM); Nut(khuyenMai, "Bỏ khuyến mãi", () => { nhap.MaKM = null; km.Text = "Không áp dụng"; VoHieu(); });
-            khuyenMai.Controls.Add(new Label { Text = "Số lượng:", AutoSize = true, Padding = new Padding(0, 7, 0, 0) }); khuyenMai.Controls.Add(sl); khuyenMai.Controls.Add(ghiChu);
+            var khuyenMai = Hang(); khuyenMai.Controls.Add(km); Nut(khuyenMai, "Khuyến mãi...", ChonKM); Nut(khuyenMai, "Bỏ khuyến mãi", () => { nhap.MaKM = null; km.Text = "Không áp dụng"; TinhTuDong(); });
+            khuyenMai.Controls.Add(ghiChu);
             Nut(khuyenMai, "Thêm dịch vụ...", ThemDV); Nut(khuyenMai, "Thêm phụ thu...", ThemPT); root.Controls.Add(khuyenMai, 0, 1);
             var chiTiet = new TabControl { Dock = DockStyle.Fill };
-            foreach (var pair in new[] { ("Phòng (chọn phòng trước khi thêm khoản thu)", phong), ("Dịch vụ", dichVu), ("Phụ thu", phuThu) })
+            foreach (var pair in new[] { ("Phòng", phong), ("Dịch vụ", dichVu), ("Phụ thu", phuThu) })
             { var page = new TabPage(pair.Item1); page.Controls.Add(pair.Item2); chiTiet.TabPages.Add(page); }
             root.Controls.Add(chiTiet, 0, 2);
-            var actions = Hang(); Nut(actions, "Xóa dịch vụ đã chọn", () => { if (dichVu.SelectedItems.Count > 0) { nhap.DichVu.Remove((ChiTietSuDungDichVu)dichVu.SelectedItems[0].Tag); VoHieu(); HienNhap(); } });
-            Nut(actions, "Xóa phụ thu đã chọn", () => { if (phuThu.SelectedItems.Count > 0) { nhap.PhuThu.Remove((ChiTietPhuThu)phuThu.SelectedItems[0].Tag); VoHieu(); HienNhap(); } });
-            Nut(actions, "Tính lại / xem trước", Tinh); actions.Controls.Add(thanhToan); root.Controls.Add(actions, 0, 3); root.Controls.Add(tong, 0, 4);
-            thanhToan.Click += (s, e) => AnToan(ThanhToan); ngay.ValueChanged += (s, e) => VoHieu(); thanhToan.Enabled = false;
+            var actions = Hang();
+            xoaDichVu.Click += (s, e) => { if (dichVu.SelectedItems.Count > 0) { nhap.DichVu.Remove((ChiTietSuDungDichVu)dichVu.SelectedItems[0].Tag); HienKhoanThu(); TinhTuDong(); } };
+            xoaPhuThu.Click += (s, e) => { if (phuThu.SelectedItems.Count > 0) { nhap.PhuThu.Remove((ChiTietPhuThu)phuThu.SelectedItems[0].Tag); HienKhoanThu(); TinhTuDong(); } };
+            actions.Controls.Add(xoaDichVu); actions.Controls.Add(xoaPhuThu); actions.Controls.Add(thanhToan); root.Controls.Add(actions, 0, 3); root.Controls.Add(tong, 0, 4);
+            thanhToan.Click += (s, e) => AnToan(ThanhToan); ngay.ValueChanged += (s, e) => TinhTuDong(); thanhToan.Enabled = false;
             var history = new TableLayoutPanel { Dock = DockStyle.Fill, ColumnCount = 1, RowCount = 3 };
             history.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100));
             history.RowStyles.Add(new RowStyle(SizeType.AutoSize)); history.RowStyles.Add(new RowStyle(SizeType.AutoSize)); history.RowStyles.Add(new RowStyle(SizeType.Percent, 100));
             var filter = Hang(); var tim = new TextBox { Width = 260, PlaceholderText = "Tìm hóa đơn..." }; filter.Controls.Add(tim);
-            Nut(filter, "Tải lại", TaiLichSu); Nut(filter, "Xem chi tiết", XemChiTiet);
+            Nut(filter, "Tải lại", TaiLichSu); Nut(filter, "Xem chi tiết", XemChiTiet); Nut(filter, "Excel", () => ExcelExport.XuatBang(this, "hoa_don", "hoa_don", "HoaDon"));
             var nangCao = new ucTimKiemNangCao { Dock = DockStyle.Fill, Visible = false }; nangCao.DatTruong(cotHD);
             Nut(filter, "Tìm nâng cao", () => nangCao.Visible = !nangCao.Visible);
             nangCao.Dong += () => nangCao.Visible = false;
@@ -68,6 +70,9 @@ namespace QLKS.GUI
             history.Controls.Add(filter, 0, 0); history.Controls.Add(nangCao, 0, 1); history.Controls.Add(lichSu, 0, 2); xem.Controls.Add(history);
             tim.TextChanged += (s, e) => AnToan(() => LvHelper.Do(lichSu, bus.TimNhanh(tim.Text), cotHD));
             lichSu.DoubleClick += (s, e) => AnToan(XemChiTiet);
+            chiTiet.SelectedIndexChanged += (s, e) => CapNhatNutXoa(chiTiet.SelectedIndex);
+            dichVu.SelectedIndexChanged += (s, e) => CapNhatNutXoa(chiTiet.SelectedIndex);
+            phuThu.SelectedIndexChanged += (s, e) => CapNhatNutXoa(chiTiet.SelectedIndex);
             LvHelper.TaoCot(phong, cotPhong); LvHelper.TaoCot(dichVu, cotDV); LvHelper.TaoCot(phuThu, cotPT); LvHelper.TaoCot(lichSu, cotHD);
             Load += (s, e) => AnToan(TaiLichSu);
             FormClosing += (s, e) => { if (CoNhap() && !XacNhanBo()) e.Cancel = true; };
@@ -78,7 +83,12 @@ namespace QLKS.GUI
         private void Nut(FlowLayoutPanel p, string text, Action a) { var b = new Button { Text = text, AutoSize = true, Height = 34 }; b.Click += (s, e) => AnToan(a); p.Controls.Add(b); }
         private void Bao(string s) { MessageBox.Show(this, s, "Hóa đơn", MessageBoxButtons.OK, MessageBoxIcon.Information); }
         private void AnToan(Action a) { try { a(); } catch (Exception ex) { Bao(ex.Message); } }
-        private void VoHieu() { daXem = null; thanhToan.Enabled = false; tong.Text = "Nhấn Tính lại / xem trước để kiểm tra số tiền. Các khoản thu chưa được lưu."; }
+        private void VoHieu() { daXem = null; thanhToan.Enabled = false; tong.Text = "Chưa có đủ dữ liệu để tính hóa đơn."; }
+        private void CapNhatNutXoa(int tab)
+        {
+            xoaDichVu.Visible = tab == 1 && dichVu.SelectedItems.Count > 0;
+            xoaPhuThu.Visible = tab == 2 && phuThu.SelectedItems.Count > 0;
+        }
         private bool CoNhap() { return nhap.DichVu.Count > 0 || nhap.PhuThu.Count > 0; }
         private bool XacNhanBo() { return MessageBox.Show(this, "Các khoản dịch vụ/phụ thu chưa thanh toán sẽ không được lưu. Tiếp tục?", "Xác nhận", MessageBoxButtons.YesNo) == DialogResult.Yes; }
 
@@ -89,17 +99,17 @@ namespace QLKS.GUI
             if (p == null) return;
             nhap = new HoaDon { MaPhieu = p.MaPhieu, MaNV = p.MaNV }; phieu.Text = p.MaPhieu + " - " + p.TenKH; nv.Text = p.MaNV + " - " + p.TenNV; km.Text = "Không áp dụng"; ngay.Value = DateTime.Now;
             foreach (ChiTietDatPhong ct in new ChiTietDatPhongBUS().TheoPhieu(p.MaPhieu)) nhap.Phong.Add(ct);
-            VoHieu(); HienNhap();
+            HienNhap(); TinhTuDong();
         }
         private void ChonNV()
         {
             var n = frmChon.Chon<NhanVien>("Nhân viên thanh toán", new NhanVienBUS().DanhSach, new CotHienThi("Mã", "MaNV", 100), new CotHienThi("Họ tên", "HoTen", 220));
-            if (n == null) return; nhap.MaNV = n.MaNV; nv.Text = n.MaNV + " - " + n.HoTen; VoHieu();
+            if (n == null) return; nhap.MaNV = n.MaNV; nv.Text = n.MaNV + " - " + n.HoTen; TinhTuDong();
         }
         private void ChonKM()
         {
             var k = frmChon.Chon<KhuyenMai>("Chọn khuyến mãi (điều kiện được kiểm tra khi tính tiền)", bus.KhuyenMai(), new CotHienThi("Mã", "MaKM", 85), new CotHienThi("Khuyến mãi", "TenKM", 250), new CotHienThi("Loại giảm", "LoaiGiam", 120), new CotHienThi("Giá trị (% / đ)", "GiaTriGiam", 120, "#,##0.##"), new CotHienThi("Từ ngày", "NgayBatDau", 100), new CotHienThi("Đến ngày", "NgayKetThuc", 100));
-            if (k == null) return; nhap.MaKM = k.MaKM; km.Text = k.TenKM; VoHieu();
+            if (k == null) return; nhap.MaKM = k.MaKM; km.Text = k.TenKM; TinhTuDong();
         }
         private string PhongChon()
         {
@@ -108,28 +118,39 @@ namespace QLKS.GUI
         }
         private void ThemDV()
         {
-            string ma = PhongChon(); var d = frmChon.Chon<DichVu>("Chọn dịch vụ", new DichVuBUS().DanhSach, new CotHienThi("Mã", "MaDV", 100), new CotHienThi("Dịch vụ", "TenDV", 240), new CotHienThi("Giá", "GiaTien", 130));
+            string ma = PhongChon();
+            int soLuong;
+            var d = frmChon.Chon<DichVu>("Chọn dịch vụ", new DichVuBUS().DanhSach, out soLuong, new CotHienThi("Mã", "MaDV", 100), new CotHienThi("Dịch vụ", "TenDV", 240), new CotHienThi("Giá", "GiaTien", 130));
             if (d == null) return;
             var cu = nhap.DichVu.Find(x => x.MaPhong == ma && x.MaDV == d.MaDV);
-            if (cu != null) { cu.SoLuongSuDung = checked(cu.SoLuongSuDung + (int)sl.Value); cu.ThanhTien = cu.SoLuongSuDung * cu.DonGiaSuDung; }
-            else nhap.DichVu.Add(new ChiTietSuDungDichVu { MaPhong = ma, MaDV = d.MaDV, TenDV = d.TenDV, SoLuongSuDung = (int)sl.Value, DonGiaSuDung = d.GiaTien, ThanhTien = sl.Value * d.GiaTien });
-            VoHieu(); HienKhoanThu();
+            if (cu != null) { cu.SoLuongSuDung = checked(cu.SoLuongSuDung + soLuong); cu.ThanhTien = cu.SoLuongSuDung * cu.DonGiaSuDung; }
+            else nhap.DichVu.Add(new ChiTietSuDungDichVu { MaPhong = ma, MaDV = d.MaDV, TenDV = d.TenDV, SoLuongSuDung = soLuong, DonGiaSuDung = d.GiaTien, ThanhTien = d.GiaTien * soLuong });
+            HienKhoanThu(); TinhTuDong();
         }
         private void ThemPT()
         {
-            string ma = PhongChon(); var p = frmChon.Chon<LuaChonPhuThu>("Chọn phụ thu", bus.PhuThu(), new CotHienThi("Mã", "MaPhuThu", 100), new CotHienThi("Phụ thu", "TenPhuThu", 280), new CotHienThi("Giá", "DonGia", 130));
+            string ma = PhongChon();
+            int soLuong;
+            var p = frmChon.Chon<LuaChonPhuThu>("Chọn phụ thu", bus.PhuThu(), out soLuong, new CotHienThi("Mã", "MaPhuThu", 100), new CotHienThi("Phụ thu", "TenPhuThu", 280), new CotHienThi("Giá", "DonGia", 130));
             if (p == null) return;
             var cu = nhap.PhuThu.Find(x => x.MaPhong == ma && x.MaPhuThu == p.MaPhuThu);
-            if (cu != null) { cu.SoLuong = checked(cu.SoLuong + (int)sl.Value); cu.ThanhTien = cu.SoLuong * cu.DonGia; cu.GhiChu = ghiChu.Text; }
-            else nhap.PhuThu.Add(new ChiTietPhuThu { MaPhong = ma, MaPhuThu = p.MaPhuThu, TenPhuThu = p.TenPhuThu, SoLuong = (int)sl.Value, DonGia = p.DonGia, ThanhTien = sl.Value * p.DonGia, GhiChu = ghiChu.Text });
-            VoHieu(); HienKhoanThu();
+            if (cu != null) { cu.SoLuong = checked(cu.SoLuong + soLuong); cu.ThanhTien = cu.SoLuong * cu.DonGia; cu.GhiChu = ghiChu.Text; }
+            else nhap.PhuThu.Add(new ChiTietPhuThu { MaPhong = ma, MaPhuThu = p.MaPhuThu, TenPhuThu = p.TenPhuThu, SoLuong = soLuong, DonGia = p.DonGia, ThanhTien = soLuong * p.DonGia, GhiChu = ghiChu.Text });
+            HienKhoanThu(); TinhTuDong();
         }
         private void HienKhoanThu() { LvHelper.Do(dichVu, new ArrayList(nhap.DichVu), cotDV); LvHelper.Do(phuThu, new ArrayList(nhap.PhuThu), cotPT); }
         private void HienNhap() { LvHelper.Do(phong, new ArrayList(nhap.Phong), cotPhong); HienKhoanThu(); }
-        private void Tinh()
+        private void TinhTuDong()
         {
-            VoHieu(); nhap.NgayThanhToan = ngay.Value;
-            if (!bus.XemTruoc(nhap, out var h, out string loi)) { Bao(loi); return; }
+            if (string.IsNullOrWhiteSpace(nhap.MaPhieu)) { VoHieu(); return; }
+            nhap.NgayThanhToan = ngay.Value;
+            if (!bus.XemTruoc(nhap, out var h, out string loi))
+            {
+                daXem = null;
+                thanhToan.Enabled = false;
+                tong.Text = "Chưa đủ dữ liệu để tính hóa đơn.";
+                return;
+            }
             nhap = h; daXem = h; HienNhap(); tong.Text = Tong(h); thanhToan.Enabled = true;
         }
         private static string Tong(HoaDon h)
@@ -162,6 +183,11 @@ namespace QLKS.GUI
                 for (int i = 0; i < 3; i++) { var page = new TabPage(titles[i]); var lv = DanhSach(); LvHelper.TaoCot(lv, columns[i]); LvHelper.Do(lv, sources[i], columns[i]); page.Controls.Add(lv); detail.TabPages.Add(page); }
                 root.Controls.Add(detail, 0, 1); f.Controls.Add(root); f.ShowDialog(this);
             }
+        }
+
+        private void InitializeComponent()
+        {
+
         }
 
         // frmMain chuyển trang bằng Dispose, vì vậy vẫn kiểm tra khoản thu chưa lưu trước khi rời trang.

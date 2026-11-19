@@ -20,6 +20,9 @@ namespace QLKS.DTO
         public decimal TongTienHoaDon { get; set; }
         // Âm nghĩa là khách được hoàn lại tiền cọc.
         public decimal TienCanThanhToan { get; set; }
+        public decimal TienThu { get { return Math.Max(0, TienCanThanhToan); } }
+        public decimal TienHoan { get { return Math.Max(0, -TienCanThanhToan); } }
+        public string TrangThaiThanhToan { get { return TienHoan > 0 ? "Đã hoàn tiền" : "Thanh toán thành công"; } }
         public List<ChiTietDatPhong> Phong { get; set; } = new List<ChiTietDatPhong>();
         public List<ChiTietSuDungDichVu> DichVu { get; set; } = new List<ChiTietSuDungDichVu>();
         public List<ChiTietPhuThu> PhuThu { get; set; } = new List<ChiTietPhuThu>();

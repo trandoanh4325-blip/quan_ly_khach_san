@@ -33,6 +33,7 @@ namespace QLKS.GUI
             btnThem.Click += (s, e) => BatDauThem();
             btnSua.Click += (s, e) => BatDauSua();
             btnXoa.Click += (s, e) => Xoa();
+            btnExcel.Click += (s, e) => ExcelExport.XuatBang(this, "san_pham", "san_pham", "SanPham");
             btnLuu.Click += (s, e) => Luu();
             btnHuy.Click += (s, e) => Huy();
             btnTaiLai.Click += (s, e) => TaiLai();
