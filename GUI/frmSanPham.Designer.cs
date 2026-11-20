@@ -16,7 +16,7 @@ namespace QLKS.GUI
         private NumericUpDown nudGiaBan;
         private TextBox txtSoLuongTon;
         private FlowLayoutPanel pnlNut;
-        private Button btnThem, btnSua, btnXoa, btnExcel, btnLuu, btnHuy, btnTaiLai;
+        private Button btnThem, btnSua, btnXoa, btnLuu, btnHuy, btnTaiLai;
         private FlowLayoutPanel pnlTimNhanh;
         private TextBox txtTimNhanh;
         private Button btnTimNangCao;
@@ -92,8 +92,8 @@ namespace QLKS.GUI
 
             pnlNut = new FlowLayoutPanel { Dock = DockStyle.Fill, WrapContents = false, AutoScroll = true };
             btnThem = Nut("Thêm"); btnSua = Nut("Sửa"); btnXoa = Nut("Xóa");
-            btnExcel = Nut("Excel"); btnLuu = Nut("Lưu"); btnHuy = Nut("Hủy"); btnTaiLai = Nut("Tải lại");
-            pnlNut.Controls.AddRange(new Control[] { btnThem, btnSua, btnXoa, btnExcel, btnLuu, btnHuy, btnTaiLai });
+            btnLuu = Nut("Lưu"); btnHuy = Nut("Hủy"); btnTaiLai = Nut("Tải lại");
+            pnlNut.Controls.AddRange(new Control[] { btnThem, btnSua, btnXoa, btnLuu, btnHuy, btnTaiLai });
             bangChinh.Controls.Add(pnlNut, 0, 2);
 
             pnlTimNhanh = new FlowLayoutPanel { Dock = DockStyle.Fill, WrapContents = false, AutoScroll = true };

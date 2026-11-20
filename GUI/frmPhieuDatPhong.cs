@@ -15,8 +15,7 @@ namespace QLKS.GUI
     /// </summary>
     public class frmPhieuDatPhong : Form
     {
-        private readonly HashSet<string> maKhachHienThiTuSinh = new HashSet<string>();
-        private int soThuTuKhachHienThi = 1;
+        private const string TuSinh = "(tự sinh)";
 
         private readonly PhieuDatPhongBUS bus = new PhieuDatPhongBUS();
         private readonly ChiTietDatPhongBUS ctBus = new ChiTietDatPhongBUS();
@@ -37,7 +36,7 @@ namespace QLKS.GUI
         private ListView lvPhieu, lvChiTiet;
         private TextBox txtTim, txtMaPhieu, txtKhach, txtNhanVien, txtCheckout, txtTienCoc, txtTong;
         private TextBox txtPhong, txtToiDa, txtGia, txtThanhTien, txtTrangThaiCT;
-        private Button btnNangCao, btnChonKH, btnChonNV, btnThemPhieu, btnSuaPhieu, btnXoaPhieu, btnExcelPhieu, btnLuuPhieu, btnHuyPhieu;
+        private Button btnNangCao, btnChonKH, btnChonNV, btnThemPhieu, btnSuaPhieu, btnXoaPhieu, btnLuuPhieu, btnHuyPhieu;
         private Button btnChonPhong, btnThemPhong, btnSuaPhong, btnXoaPhong, btnPhongMoi;
         private DateTimePicker dtpNgayTao, dtpCheckin;
         private ComboBox cboTheoGio, cboCoc;
@@ -207,16 +206,17 @@ namespace QLKS.GUI
             cboCoc = new ComboBox { Left = 475, Top = 232, Width = 100, DropDownStyle = ComboBoxStyle.DropDownList };
             cboCoc.Items.AddRange(PhieuDatPhongBUS.TrangThaiCocChoPhep);
             pnlThan.Controls.Add(cboCoc);
-            Nhan(pnlThan, "Tổng dự kiến", 595, 232);
-            txtTong = Txt(pnlThan, 690, 232, 125, true);
+            Nhan(pnlThan, "Tiền cọc", 595, 232);
+            txtTienCoc = Txt(pnlThan, 665, 232, 120, false);
+            Nhan(pnlThan, "Tổng dự kiến", 800, 232);
+            txtTong = Txt(pnlThan, 895, 232, 125, true);
 
             btnThemPhieu = Nut(pnlThan, "Thêm", 10, 272, 95, 30);
             btnSuaPhieu = Nut(pnlThan, "Sửa", 115, 272, 95, 30);
             btnXoaPhieu = Nut(pnlThan, "Xóa", 220, 272, 95, 30);
-            btnExcelPhieu = Nut(pnlThan, "Excel", 325, 272, 95, 30);
-            btnLuuPhieu = Nut(pnlThan, "Lưu", 430, 272, 95, 30);
-            btnHuyPhieu = Nut(pnlThan, "Hủy", 535, 272, 95, 30);
-            lblTinhTrang = new Label { Left = 650, Top = 278, AutoSize = true, Font = new Font("Segoe UI", 10F, FontStyle.Bold) };
+            btnLuuPhieu = Nut(pnlThan, "Lưu", 325, 272, 95, 30);
+            btnHuyPhieu = Nut(pnlThan, "Hủy", 430, 272, 95, 30);
+            lblTinhTrang = new Label { Left = 545, Top = 278, AutoSize = true, Font = new Font("Segoe UI", 10F, FontStyle.Bold) };
             pnlThan.Controls.Add(lblTinhTrang);
 
             // ---- chi tiết đặt phòng (ListView phụ) ----
@@ -248,8 +248,6 @@ namespace QLKS.GUI
             txtThanhTien = Txt(pnlChiTiet, 305, 36, 120, true);
             Nhan(pnlChiTiet, "Trạng thái", 445, 36);
             txtTrangThaiCT = Txt(pnlChiTiet, 525, 36, 110, true);
-            Nhan(pnlChiTiet, "Tiền cọc", 650, 36);
-            txtTienCoc = Txt(pnlChiTiet, 720, 36, 120, true);
 
             pnlChiTiet.Controls.Add(new Label
             {
@@ -265,7 +263,6 @@ namespace QLKS.GUI
             dgv.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "Mã khách ở", Width = 120, ReadOnly = true, SortMode = DataGridViewColumnSortMode.NotSortable });
             dgv.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "Họ và tên", Width = 300, SortMode = DataGridViewColumnSortMode.NotSortable });
             dgv.Columns.Add(new DataGridViewTextBoxColumn { HeaderText = "CCCD", Width = 200, SortMode = DataGridViewColumnSortMode.NotSortable });
-            dgv.Columns.Add(new DataGridViewButtonColumn { HeaderText = "", Text = "...", Width = 42, UseColumnTextForButtonValue = true, SortMode = DataGridViewColumnSortMode.NotSortable });
             pnlChiTiet.Controls.Add(dgv);
 
             btnThemPhong = Nut(pnlChiTiet, "Thêm phòng vào phiếu", 730, 102, 190, 32);
@@ -284,7 +281,6 @@ namespace QLKS.GUI
             btnThemPhieu.Click += (s, e) => ThemPhieu();
             btnSuaPhieu.Click += (s, e) => SuaPhieu();
             btnXoaPhieu.Click += (s, e) => XoaPhieu();
-            btnExcelPhieu.Click += (s, e) => ExcelExport.XuatBang(this, "phieu_dat_phong", "phieu_dat_phong", "PhieuDatPhong");
             btnLuuPhieu.Click += (s, e) => LuuPhieu();
             btnHuyPhieu.Click += (s, e) => HuyPhieu();
 
@@ -292,19 +288,14 @@ namespace QLKS.GUI
             dtpCheckin.ValueChanged += (s, e) => { if (!dangNap) CapNhatCheckout(); };
             nudNgay.ValueChanged += (s, e) => { if (!dangNap) CapNhatCheckout(); };
             nudGio.ValueChanged += (s, e) => { if (!dangNap) CapNhatCheckout(); };
-            cboCoc.SelectedIndexChanged += (s, e) => { if (!dangNap) CapNhatTienCoc(); };
 
             btnChonPhong.Click += (s, e) => ChonPhong();
-            nudSoKhach.ValueChanged += (s, e) => { if (!dangNap) { CapNhatXemTruoc(); DungLaiLuoi(); CapNhatTienCoc(); } };
+            nudSoKhach.ValueChanged += (s, e) => { if (!dangNap) { CapNhatXemTruoc(); DungLaiLuoi(); } };
             chkKhachDat.CheckedChanged += (s, e) => DoiKhachDat();
             btnThemPhong.Click += (s, e) => ThemPhong();
             btnSuaPhong.Click += (s, e) => SuaPhong();
             btnXoaPhong.Click += (s, e) => XoaPhong();
             btnPhongMoi.Click += (s, e) => NhapPhongMoi();
-            dgv.CellContentClick += (s, e) =>
-            {
-                if (e.RowIndex >= 0 && e.ColumnIndex == 3) ChonKhachChoDong(e.RowIndex);
-            };
         }
 
         private void frmPhieuDatPhong_Load(object sender, EventArgs e)
@@ -421,7 +412,6 @@ namespace QLKS.GUI
             }
             ApDungKieuO(false);
             CapNhatCheckout();
-            CapNhatTienCoc();
         }
 
         // Ở theo giờ: chỉ nhập số giờ nghỉ. Ở theo ngày: chỉ nhập số ngày dự kiến.
@@ -459,7 +449,7 @@ namespace QLKS.GUI
             dtpCheckin.Enabled = nhap;
             cboTheoGio.Enabled = nhap;
             cboCoc.Enabled = nhap;
-            txtTienCoc.ReadOnly = true;
+            txtTienCoc.Enabled = nhap;
             ApDungKieuO(false);
             lvPhieu.Enabled = !nhap;
             txtTim.Enabled = !nhap;
@@ -490,7 +480,6 @@ namespace QLKS.GUI
             nudSoKhach.Enabled = choSua;
             chkKhachDat.Enabled = choSua;
             dgv.ReadOnly = !choSua;
-            CapNhatTienCoc();
         }
 
         private void ChonKhachHang()
@@ -500,22 +489,6 @@ namespace QLKS.GUI
             if (k == null) return;
             khChon = k;
             txtKhach.Text = k.HoTen;
-        }
-
-        private void ChonKhachChoDong(int rowIndex)
-        {
-            if (dangNap || rowIndex < 0 || rowIndex >= dgv.Rows.Count) return;
-            if (rowIndex == 0 && row0LaKhachDat)
-            {
-                MessageBox.Show("Dòng đầu đang lấy theo khách đặt phiếu.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                return;
-            }
-
-            khBus.TaiDuLieu();
-            KhachHang k = frmChon.Chon<KhachHang>("Chọn khách ở", khBus.DanhSach, cotKhach);
-            if (k == null) return;
-            dgv.Rows[rowIndex].Cells[1].Value = k.HoTen;
-            dgv.Rows[rowIndex].Cells[2].Value = k.CCCD;
         }
 
         private void ChonNhanVien()
@@ -678,9 +651,8 @@ namespace QLKS.GUI
                     else ds.Add(k);
                 }
                 dgv.Rows.Clear();
-                maKhachHienThiTuSinh.Clear();
-                foreach (ChiTietKhachO k in ds) dgv.Rows.Add(k.MaKhachO, k.HoTen, k.CCCD, "...");
-                while (dgv.Rows.Count < (int)nudSoKhach.Value) dgv.Rows.Add(MaKhachHienThiMoi(), "", "", "...");
+                foreach (ChiTietKhachO k in ds) dgv.Rows.Add(k.MaKhachO, k.HoTen, k.CCCD);
+                while (dgv.Rows.Count < (int)nudSoKhach.Value) dgv.Rows.Add(TuSinh, "", "");
                 chkKhachDat.Checked = coKhachDat;
                 row0LaKhachDat = coKhachDat;
                 KhoaDongDau(coKhachDat);
@@ -710,7 +682,6 @@ namespace QLKS.GUI
                 nudSoKhach.Value = 1;
                 chkKhachDat.Checked = false;
                 row0LaKhachDat = false;
-                maKhachHienThiTuSinh.Clear();
                 dgv.Rows.Clear();
             }
             finally
@@ -748,7 +719,6 @@ namespace QLKS.GUI
             }
             CapNhatXemTruoc();
             DungLaiLuoi();
-            CapNhatTienCoc();
         }
 
         // Hiện giá phòng và thành tiền dự kiến ngay khi chọn phòng
@@ -759,25 +729,6 @@ namespace QLKS.GUI
             if (xem == null) return;
             txtGia.Text = xem.GiaPhong.ToString("N0");
             txtThanhTien.Text = xem.ThanhTien.ToString("N0");
-        }
-
-        private void CapNhatTienCoc()
-        {
-            if (cboCoc.SelectedItem == null) return;
-            decimal tongPhong = 0;
-            if (phieuChon != null)
-            {
-                foreach (ChiTietDatPhong ct in ctBus.TheoPhieu(phieuChon.MaPhieu))
-                    tongPhong += ct.ThanhTien;
-            }
-            if (phieuChon != null && phongChon != null && ctChon == null)
-            {
-                ChiTietDatPhong xem = ctBus.TaoMoi(phieuChon, phongChon, (int)nudSoKhach.Value);
-                if (xem != null) tongPhong += xem.ThanhTien;
-            }
-
-            decimal coc = cboCoc.Text == "Đã cọc" ? Math.Round(tongPhong * 50m / 100m, 0) : 0;
-            txtTienCoc.Text = coc.ToString("N0");
         }
 
         // Số dòng của lưới = số khách. Giữ lại những gì đã gõ ở các dòng còn lại.
@@ -792,9 +743,9 @@ namespace QLKS.GUI
             dgv.Rows.Clear();
             for (int i = 0; i < n; i++)
             {
-                string[] v = i < cu.Count ? cu[i] : new[] { MaKhachHienThiMoi(), "", "" };
-                if (v[0] == "") v[0] = MaKhachHienThiMoi();
-                dgv.Rows.Add(v[0], v[1], v[2], "...");
+                string[] v = i < cu.Count ? cu[i] : new[] { TuSinh, "", "" };
+                if (v[0] == "") v[0] = TuSinh;
+                dgv.Rows.Add(v[0], v[1], v[2]);
             }
             ApDungKhachDat();
         }
@@ -843,20 +794,6 @@ namespace QLKS.GUI
             dgv.Rows[0].Cells[2].ReadOnly = khoa;
         }
 
-        private string MaKhachHienThiMoi()
-        {
-            string ma;
-            do
-            {
-                ma = "KO" + soThuTuKhachHienThi.ToString("D4");
-                soThuTuKhachHienThi++;
-            }
-            while (maKhachHienThiTuSinh.Contains(ma));
-
-            maKhachHienThiTuSinh.Add(ma);
-            return ma;
-        }
-
         private List<ChiTietKhachO> LayKhach()
         {
             dgv.EndEdit();
@@ -866,7 +803,7 @@ namespace QLKS.GUI
                 string ma = Cell(r, 0);
                 ds.Add(new ChiTietKhachO
                 {
-                    MaKhachO = maKhachHienThiTuSinh.Contains(ma) ? "" : ma,
+                    MaKhachO = ma == TuSinh ? "" : ma,
                     HoTen = Cell(r, 1),
                     CCCD = Cell(r, 2)
                 });
@@ -880,7 +817,6 @@ namespace QLKS.GUI
             string ma = phieuChon.MaPhieu;
             bus.TaiDuLieu();
             NapLaiDanhSach(ma);
-            CapNhatTienCoc();
         }
 
         private void ThemPhong()

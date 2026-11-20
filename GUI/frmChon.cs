@@ -4,7 +4,6 @@ using System.Drawing;
 using System.Windows.Forms;
 using QLKS.BUS;
 using QLKS.Common;
-using QLKS.DTO;
 
 namespace QLKS.GUI
 {
@@ -16,16 +15,11 @@ namespace QLKS.GUI
         private ListView lv;
         private TextBox txtTim;
         private ucTimKiemNangCao ucTim;
-        private readonly bool laKhachHang;
-        private readonly bool coSoLuong;
-        private NumericUpDown nudSoLuong;
 
-        private frmChon(string tieuDe, ArrayList ds, CotHienThi[] cot, bool laKhachHang, bool coSoLuong)
+        private frmChon(string tieuDe, ArrayList ds, CotHienThi[] cot)
         {
             this.nguon = ds;
             this.cot = cot;
-            this.laKhachHang = laKhachHang;
-            this.coSoLuong = coSoLuong;
             Text = tieuDe;
             Font = new Font("Segoe UI", 10F);
             Width = 900;
@@ -37,27 +31,10 @@ namespace QLKS.GUI
         public static T Chon<T>(string tieuDe, ArrayList ds, params CotHienThi[] cot) where T : class
         {
             SelectionContext.Xoa();
-            using (var f = new frmChon(tieuDe, ds, cot, typeof(T) == typeof(KhachHang), false))
+            using (var f = new frmChon(tieuDe, ds, cot))
             {
                 if (f.ShowDialog() == DialogResult.OK)
                 {
-                    T kq = SelectionContext.DoiTuongDaChon as T;
-                    SelectionContext.Xoa();
-                    return kq;
-                }
-            }
-            return null;
-        }
-
-        public static T Chon<T>(string tieuDe, ArrayList ds, out int soLuong, params CotHienThi[] cot) where T : class
-        {
-            soLuong = 1;
-            SelectionContext.Xoa();
-            using (var f = new frmChon(tieuDe, ds, cot, false, true))
-            {
-                if (f.ShowDialog() == DialogResult.OK)
-                {
-                    soLuong = (int)f.nudSoLuong.Value;
                     T kq = SelectionContext.DoiTuongDaChon as T;
                     SelectionContext.Xoa();
                     return kq;
@@ -68,12 +45,11 @@ namespace QLKS.GUI
 
         private void XayDung()
         {
-            var tl = new TableLayoutPanel { Dock = DockStyle.Fill, ColumnCount = 1, RowCount = laKhachHang ? 5 : 4, Padding = new Padding(8) };
+            var tl = new TableLayoutPanel { Dock = DockStyle.Fill, ColumnCount = 1, RowCount = 4, Padding = new Padding(8) };
             tl.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100));
             tl.RowStyles.Add(new RowStyle(SizeType.AutoSize));
             tl.RowStyles.Add(new RowStyle(SizeType.AutoSize));
             tl.RowStyles.Add(new RowStyle(SizeType.Percent, 100));
-            if (laKhachHang) tl.RowStyles.Add(new RowStyle(SizeType.Absolute, 42));
             tl.RowStyles.Add(new RowStyle(SizeType.Absolute, 52));
 
             var bar = new Panel { Height = 42, Dock = DockStyle.Fill };
@@ -102,23 +78,6 @@ namespace QLKS.GUI
             lv.DoubleClick += (s, e) => ChonDong();
             tl.Controls.Add(lv, 0, 2);
 
-            if (laKhachHang)
-            {
-                var nhanh = new FlowLayoutPanel { Dock = DockStyle.Fill, FlowDirection = FlowDirection.LeftToRight };
-                Button NutNhanh(string text, Action action)
-                {
-                    var b = new Button { Text = text, Width = 105, Height = 30 };
-                    b.Click += (s, e) => action();
-                    nhanh.Controls.Add(b);
-                    return b;
-                }
-                NutNhanh("Thêm", ThemKhachHang);
-                NutNhanh("Sửa", SuaKhachHang);
-                NutNhanh("Xóa", XoaKhachHang);
-                NutNhanh("Tải lại", TaiLaiKhachHang);
-                tl.Controls.Add(nhanh, 0, 3);
-            }
-
             var nut = new FlowLayoutPanel { Dock = DockStyle.Fill, FlowDirection = FlowDirection.RightToLeft };
             var btnDong = new Button { Text = "Đóng", Width = 100, Height = 36 };
             btnDong.Click += (s, e) => { DialogResult = DialogResult.Cancel; };
@@ -126,54 +85,10 @@ namespace QLKS.GUI
             btnChon.Click += (s, e) => ChonDong();
             nut.Controls.Add(btnDong);
             nut.Controls.Add(btnChon);
-            if (coSoLuong)
-            {
-                nudSoLuong = new NumericUpDown { Minimum = 1, Maximum = 1000000, Value = 1, Width = 90, Height = 32, ThousandsSeparator = true };
-                nut.Controls.Add(nudSoLuong);
-                nut.Controls.Add(new Label { Text = "Số lượng:", AutoSize = true, Padding = new Padding(0, 9, 0, 0) });
-            }
-            tl.Controls.Add(nut, 0, laKhachHang ? 4 : 3);
+            tl.Controls.Add(nut, 0, 3);
 
             Controls.Add(tl);
             Hien(nguon);
-        }
-
-        private KhachHang KhachDangChon()
-        {
-            return lv.SelectedItems.Count == 0 ? null : lv.SelectedItems[0].Tag as KhachHang;
-        }
-
-        private void ThemKhachHang()
-        {
-            using (var f = new frmKhachHang()) f.ShowDialog(this);
-            TaiLaiKhachHang();
-        }
-
-        private void SuaKhachHang()
-        {
-            KhachHang kh = KhachDangChon();
-            if (kh == null) { MessageBox.Show(this, "Vui lòng chọn khách hàng cần sửa.", "Thông báo"); return; }
-            using (var f = new frmKhachHang(kh.MaKH)) f.ShowDialog(this);
-            TaiLaiKhachHang();
-        }
-
-        private void XoaKhachHang()
-        {
-            KhachHang kh = KhachDangChon();
-            if (kh == null) { MessageBox.Show(this, "Vui lòng chọn khách hàng cần xóa.", "Thông báo"); return; }
-            if (MessageBox.Show(this, "Xóa khách hàng " + kh.MaKH + "?", "Xác nhận", MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes) return;
-            var bus = new KhachHangBUS();
-            if (!bus.Xoa(kh.MaKH, out string loi)) MessageBox.Show(this, loi, "Không thể xóa", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            TaiLaiKhachHang();
-        }
-
-        private void TaiLaiKhachHang()
-        {
-            var bus = new KhachHangBUS();
-            bus.TaiDuLieu();
-            nguon.Clear();
-            foreach (KhachHang kh in bus.DanhSach) nguon.Add(kh);
-            Hien(TimKiemBUS.TimNhanh(nguon, txtTim.Text));
         }
 
         private void Hien(ArrayList ds)

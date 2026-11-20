@@ -45,9 +45,7 @@ namespace QLKS.GUI
             pnlNoiDung = new Panel();
             pnlMenu.SuspendLayout();
             SuspendLayout();
-            // 
-            // lblTieuDe
-            // 
+           
             lblTieuDe.BackColor = System.Drawing.Color.Cyan;
             lblTieuDe.Dock = DockStyle.Top;
             lblTieuDe.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, 0);
@@ -58,9 +56,8 @@ namespace QLKS.GUI
             lblTieuDe.TabIndex = 32;
             lblTieuDe.Text = "Khách Sạn";
             lblTieuDe.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // btnKhachHang
-            // 
+            
+            btnKhachHang.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             btnKhachHang.BackColor = System.Drawing.Color.White;
             btnKhachHang.Location = new System.Drawing.Point(12, 73);
             btnKhachHang.Name = "btnKhachHang";
@@ -72,6 +69,7 @@ namespace QLKS.GUI
             // 
             // btnNhanVien
             // 
+            btnNhanVien.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             btnNhanVien.BackColor = System.Drawing.Color.White;
             btnNhanVien.Location = new System.Drawing.Point(12, 27);
             btnNhanVien.Name = "btnNhanVien";
@@ -80,9 +78,8 @@ namespace QLKS.GUI
             btnNhanVien.Text = "Nhân Viên";
             btnNhanVien.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             btnNhanVien.UseVisualStyleBackColor = false;
-            // 
-            // btnThamSo
-            // 
+            
+            btnThamSo.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             btnThamSo.BackColor = System.Drawing.Color.White;
             btnThamSo.Location = new System.Drawing.Point(12, 119);
             btnThamSo.Name = "btnThamSo";
@@ -91,13 +88,11 @@ namespace QLKS.GUI
             btnThamSo.Text = "Tham số";
             btnThamSo.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             btnThamSo.UseVisualStyleBackColor = false;
-            // 
-            // pnlMenu
-            // 
-            pnlMenu.Controls.Add(btnDichVu);
+             
             pnlMenu.Controls.Add(btnThongKe);
             pnlMenu.Controls.Add(btnSanPham);
             pnlMenu.Controls.Add(btnHoaDon);
+            pnlMenu.Controls.Add(btnDichVu);
             pnlMenu.Controls.Add(btnPhieuDatPhong);
             pnlMenu.Controls.Add(btnPhong);
             pnlMenu.Controls.Add(btnLoaiPhong);
@@ -107,55 +102,50 @@ namespace QLKS.GUI
             pnlMenu.Dock = DockStyle.Left;
             pnlMenu.Location = new System.Drawing.Point(0, 66);
             pnlMenu.Name = "pnlMenu";
-            pnlMenu.Size = new System.Drawing.Size(240, 801);
+            pnlMenu.Size = new System.Drawing.Size(240, 514);
             pnlMenu.TabIndex = 40;
-            // 
-            // btnThongKe
-            // 
+             
+            btnThongKe.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             btnThongKe.BackColor = System.Drawing.Color.White;
-            btnThongKe.Location = new System.Drawing.Point(12, 383);
+            btnThongKe.Location = new System.Drawing.Point(12, 427);
             btnThongKe.Name = "btnThongKe";
             btnThongKe.Size = new System.Drawing.Size(210, 38);
             btnThongKe.TabIndex = 36;
             btnThongKe.Text = "Thống Kê";
             btnThongKe.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             btnThongKe.UseVisualStyleBackColor = false;
-            // 
-            // btnSanPham
-            // 
+            
+            btnSanPham.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             btnSanPham.BackColor = System.Drawing.Color.White;
-            btnSanPham.Location = new System.Drawing.Point(12, 427);
+            btnSanPham.Location = new System.Drawing.Point(12, 383);
             btnSanPham.Name = "btnSanPham";
             btnSanPham.Size = new System.Drawing.Size(210, 38);
             btnSanPham.TabIndex = 35;
             btnSanPham.Text = "Sản Phẩm";
             btnSanPham.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             btnSanPham.UseVisualStyleBackColor = false;
-            // 
-            // btnHoaDon
-            // 
+            
+            btnHoaDon.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             btnHoaDon.BackColor = System.Drawing.Color.White;
-            btnHoaDon.Location = new System.Drawing.Point(12, 295);
+            btnHoaDon.Location = new System.Drawing.Point(12, 339);
             btnHoaDon.Name = "btnHoaDon";
             btnHoaDon.Size = new System.Drawing.Size(210, 38);
             btnHoaDon.TabIndex = 34;
             btnHoaDon.Text = "Hóa Đơn";
             btnHoaDon.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             btnHoaDon.UseVisualStyleBackColor = false;
-            // 
-            // btnDichVu
-            // 
+            
+            btnDichVu.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             btnDichVu.BackColor = System.Drawing.Color.White;
-            btnDichVu.Location = new System.Drawing.Point(12, 339);
+            btnDichVu.Location = new System.Drawing.Point(12, 295);
             btnDichVu.Name = "btnDichVu";
             btnDichVu.Size = new System.Drawing.Size(210, 38);
             btnDichVu.TabIndex = 33;
             btnDichVu.Text = "Dịch Vụ";
             btnDichVu.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             btnDichVu.UseVisualStyleBackColor = false;
-            // 
-            // btnPhieuDatPhong
-            // 
+             
+            btnPhieuDatPhong.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             btnPhieuDatPhong.BackColor = System.Drawing.Color.White;
             btnPhieuDatPhong.Location = new System.Drawing.Point(12, 251);
             btnPhieuDatPhong.Name = "btnPhieuDatPhong";
@@ -164,9 +154,8 @@ namespace QLKS.GUI
             btnPhieuDatPhong.Text = "Phiếu Đặt Phòng";
             btnPhieuDatPhong.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             btnPhieuDatPhong.UseVisualStyleBackColor = false;
-            // 
-            // btnPhong
-            // 
+             
+            btnPhong.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             btnPhong.BackColor = System.Drawing.Color.White;
             btnPhong.Location = new System.Drawing.Point(12, 207);
             btnPhong.Name = "btnPhong";
@@ -175,9 +164,8 @@ namespace QLKS.GUI
             btnPhong.Text = "Phòng";
             btnPhong.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             btnPhong.UseVisualStyleBackColor = false;
-            // 
-            // btnLoaiPhong
-            // 
+            
+            btnLoaiPhong.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             btnLoaiPhong.BackColor = System.Drawing.Color.White;
             btnLoaiPhong.Location = new System.Drawing.Point(12, 163);
             btnLoaiPhong.Name = "btnLoaiPhong";
@@ -186,21 +174,17 @@ namespace QLKS.GUI
             btnLoaiPhong.Text = "Loại Phòng";
             btnLoaiPhong.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             btnLoaiPhong.UseVisualStyleBackColor = false;
-            // 
-            // pnlNoiDung
-            // 
+            
             pnlNoiDung.BackColor = System.Drawing.Color.White;
             pnlNoiDung.Dock = DockStyle.Fill;
             pnlNoiDung.Location = new System.Drawing.Point(240, 66);
             pnlNoiDung.Name = "pnlNoiDung";
-            pnlNoiDung.Size = new System.Drawing.Size(1058, 801);
+            pnlNoiDung.Size = new System.Drawing.Size(1058, 514);
             pnlNoiDung.TabIndex = 41;
-            // 
-            // frmMain
-            // 
+            
             AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new System.Drawing.Size(1298, 867);
+            ClientSize = new System.Drawing.Size(1298, 580);
             Controls.Add(pnlNoiDung);
             Controls.Add(pnlMenu);
             Controls.Add(lblTieuDe);

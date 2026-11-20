@@ -47,6 +47,10 @@ namespace QLKS.GUI
                 "Phiếu nhập hàng",
                 () => new frmPhieuNhap());
 
+            Button btnExcel = TaoNutMenu(
+                "Excel - Dữ liệu",
+                () => new frmExcelTV4());
+
             // Sắp xếp menu theo thứ tự các module
             Button[] menu =
             {
@@ -70,7 +74,8 @@ namespace QLKS.GUI
                 btnSanPham,
                 btnNhaCungCap,
                 btnPhieuNhap,
-                btnThongKe
+                btnThongKe,
+                btnExcel
             };
 
             for (int i = 0; i < menu.Length; i++)
