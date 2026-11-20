@@ -1,11 +1,13 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Windows.Forms;
 using QLKS.BUS;
 using QLKS.Common;
 using QLKS.DTO;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Data;
+using System.Drawing;
+using System.Windows.Forms;
+using System.Data;
 
 namespace QLKS.GUI
 {
@@ -213,10 +215,10 @@ namespace QLKS.GUI
             btnThemPhieu = Nut(pnlThan, "Thêm", 10, 272, 95, 30);
             btnSuaPhieu = Nut(pnlThan, "Sửa", 115, 272, 95, 30);
             btnXoaPhieu = Nut(pnlThan, "Xóa", 220, 272, 95, 30);
-            btnExcelPhieu = Nut(pnlThan, "Excel", 325, 272, 95, 30);
             btnLuuPhieu = Nut(pnlThan, "Lưu", 430, 272, 95, 30);
             btnHuyPhieu = Nut(pnlThan, "Hủy", 535, 272, 95, 30);
-            lblTinhTrang = new Label { Left = 650, Top = 278, AutoSize = true, Font = new Font("Segoe UI", 10F, FontStyle.Bold) };
+            btnExcelPhieu = Nut(pnlThan, "Excel", 325, 272, 95, 30);
+            lblTinhTrang = new Label { Left = 660, Top = 278, AutoSize = true, Font = new Font("Segoe UI", 10F, FontStyle.Bold) };
             pnlThan.Controls.Add(lblTinhTrang);
 
             // ---- chi tiết đặt phòng (ListView phụ) ----
@@ -284,7 +286,7 @@ namespace QLKS.GUI
             btnThemPhieu.Click += (s, e) => ThemPhieu();
             btnSuaPhieu.Click += (s, e) => SuaPhieu();
             btnXoaPhieu.Click += (s, e) => XoaPhieu();
-            btnExcelPhieu.Click += (s, e) => ExcelExport.XuatBang(this, "phieu_dat_phong", "phieu_dat_phong", "PhieuDatPhong");
+            btnExcelPhieu.Click += (s, e) => XuatExcelPhieu();
             btnLuuPhieu.Click += (s, e) => LuuPhieu();
             btnHuyPhieu.Click += (s, e) => HuyPhieu();
 
@@ -394,6 +396,8 @@ namespace QLKS.GUI
             }
             ApDungKieuO(false);
         }
+
+      
 
         private void LamTrongPhieu()
         {
@@ -939,5 +943,38 @@ namespace QLKS.GUI
             }
             SauKhiDoiChiTiet();
         }
+
+        private void XuatExcelPhieu()
+        {
+            if (phieuChon == null)
+            {
+                MessageBox.Show("Chọn phiếu cần xuất.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+            using (var dlg = new SaveFileDialog { Filter = "Excel (*.xlsx)|*.xlsx", FileName = phieuChon.MaPhieu + ".xlsx" })
+            {
+                if (dlg.ShowDialog(this) != DialogResult.OK) return;
+                var dt = new DataTable();
+                foreach (var c in new[] { "Loại", "Mục", "Phòng", "Số khách / CCCD", "Giá phòng", "Thành tiền" })
+                    dt.Columns.Add(c, typeof(object));
+                dt.Rows.Add("Phiếu", phieuChon.MaPhieu, "", "", "", "");
+                dt.Rows.Add("Khách hàng", phieuChon.TenKH, "", "", "", "");
+                dt.Rows.Add("Nhân viên", phieuChon.TenNV, "", "", "", "");
+                dt.Rows.Add("Check-in", phieuChon.NgayCheckin.ToString("dd/MM/yyyy HH:mm"), "", "", "", "");
+                dt.Rows.Add("Check-out", phieuChon.NgayCheckout.HasValue ? phieuChon.NgayCheckout.Value.ToString("dd/MM/yyyy HH:mm") : "", "", "", "", "");
+                dt.Rows.Add("Tiền cọc", phieuChon.TrangThaiCoc, "", "", "", phieuChon.TienCoc);
+                foreach (ChiTietDatPhong ct in ctBus.TheoPhieu(phieuChon.MaPhieu))
+                {
+                    dt.Rows.Add("Phòng", ct.TenPhong, ct.MaPhong, ct.SoKhach, ct.GiaPhong, ct.ThanhTien);
+                    foreach (ChiTietKhachO k in ctBus.Khach.Theo(ct.MaPhieu, ct.MaPhong))
+                        dt.Rows.Add("Khách ở", k.HoTen, ct.MaPhong, k.CCCD, "", "");
+                }
+                dt.Rows.Add("Tổng dự kiến", "", "", "", "", phieuChon.TongTienDuKien);
+                ExcelHelper.Xuat(dlg.FileName, dt, phieuChon.MaPhieu);
+                MessageBox.Show("Đã xuất Excel.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+        }
+
+
     }
 }

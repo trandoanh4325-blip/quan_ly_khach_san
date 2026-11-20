@@ -15,6 +15,10 @@ namespace QLKS.GUI
         private ListView lv;
         private TextBox txtTim;
         private ucTimKiemNangCao ucTim;
+        private NumericUpDown nudSL;
+        private Label lblSL;
+        private int soLuongChon = 1;
+
 
         private frmChon(string tieuDe, ArrayList ds, CotHienThi[] cot)
         {
@@ -36,6 +40,24 @@ namespace QLKS.GUI
                 if (f.ShowDialog() == DialogResult.OK)
                 {
                     T kq = SelectionContext.DoiTuongDaChon as T;
+                    SelectionContext.Xoa();
+                    return kq;
+                }
+            }
+            return null;
+        }
+
+        public static T Chon<T>(string tieuDe, ArrayList ds, out int soLuong, params CotHienThi[] cot) where T : class
+        {
+            SelectionContext.Xoa();
+            soLuong = 1;
+            using (var f = new frmChon(tieuDe, ds, cot))
+            {
+                f.nudSL.Visible = f.lblSL.Visible = true;
+                if (f.ShowDialog() == DialogResult.OK)
+                {
+                    T kq = SelectionContext.DoiTuongDaChon as T;
+                    soLuong = f.soLuongChon;
                     SelectionContext.Xoa();
                     return kq;
                 }
@@ -83,8 +105,12 @@ namespace QLKS.GUI
             btnDong.Click += (s, e) => { DialogResult = DialogResult.Cancel; };
             var btnChon = new Button { Text = "Chọn", Width = 100, Height = 36 };
             btnChon.Click += (s, e) => ChonDong();
+            lblSL = new Label { Text = "Số lượng:", AutoSize = true, Margin = new Padding(3, 10, 3, 0), Visible = false };
+            nudSL = new NumericUpDown { Minimum = 1, Maximum = 1000000, Value = 1, Width = 80, Margin = new Padding(3, 7, 10, 0), Visible = false };
             nut.Controls.Add(btnDong);
             nut.Controls.Add(btnChon);
+            nut.Controls.Add(nudSL);
+            nut.Controls.Add(lblSL);
             tl.Controls.Add(nut, 0, 3);
 
             Controls.Add(tl);
@@ -104,6 +130,7 @@ namespace QLKS.GUI
                 return;
             }
             SelectionContext.DoiTuongDaChon = lv.SelectedItems[0].Tag;   // biến static
+            soLuongChon = (int)nudSL.Value;
             DialogResult = DialogResult.OK;
         }
     }
